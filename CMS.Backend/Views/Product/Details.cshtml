@@ -1,0 +1,84 @@
+@model CMS.Data.Entities.Product
+
+@{
+    ViewData["Title"] = "Chi tiết Sản phẩm";
+}
+
+<div class="container mt-5">
+    <div class="card shadow-sm border-0 rounded-4" style="background: rgba(30, 41, 59, 0.5); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08) !important;">
+        <div class="card-header border-0 py-3" style="background: linear-gradient(135deg, #1e293b, #0f172a); border-radius: 1rem 1rem 0 0;">
+            <h4 class="mb-0 fw-bold" style="background: linear-gradient(135deg, #38bdf8, #818cf8); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                <i class="fas fa-info-circle me-2" style="color: #38bdf8;"></i>THÔNG TIN CHI TIẾT SẢN PHẨM
+            </h4>
+        </div>
+        <div class="card-body p-4 text-light">
+            <div class="row">
+                <div class="col-md-4 text-center mb-4 mb-md-0">
+                    <img src="@(string.IsNullOrEmpty(Model.ImageUrl) ? "https://via.placeholder.com/300x300?text=No+Image" : Url.Content(Model.ImageUrl.StartsWith("http") || Model.ImageUrl.StartsWith("/") ? Model.ImageUrl : "~/" + Model.ImageUrl))" 
+                         class="img-fluid rounded-4 shadow-lg border" style="max-height: 350px; object-fit: cover; border-color: rgba(255,255,255,0.1) !important;" alt="@Model.Name" />
+                </div>
+                <div class="col-md-8">
+                    <h2 class="fw-bold mb-4" style="color: #f8fafc;">@Model.Name</h2>
+                    
+                    <div class="row mb-3 align-items-center">
+                        <div class="col-sm-4 text-secondary fw-bold text-uppercase" style="font-size: 0.85rem; letter-spacing: 0.5px;">Mã sản phẩm:</div>
+                        <div class="col-sm-8"><span class="badge rounded-pill" style="background: rgba(56, 189, 248, 0.1); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.2); font-size: 0.9rem;">#@Model.Id</span></div>
+                    </div>
+
+                    <div class="row mb-3 align-items-center">
+                        <div class="col-sm-4 text-secondary fw-bold text-uppercase" style="font-size: 0.85rem; letter-spacing: 0.5px;">Loại sản phẩm:</div>
+                        <div class="col-sm-8">
+                            <span class="badge" style="background: rgba(99, 102, 241, 0.2); color: #818cf8; border: 1px solid rgba(99, 102, 241, 0.3); font-size: 0.9rem;">
+                                <i class="fas fa-tag me-1"></i>@(Model.CategoryProduct?.Name ?? "Chưa phân loại")
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3 align-items-center">
+                        <div class="col-sm-4 text-secondary fw-bold text-uppercase" style="font-size: 0.85rem; letter-spacing: 0.5px;">Giá bán:</div>
+                        <div class="col-sm-8">
+                            <span class="fw-bold" style="color: #fca5a5; font-size: 1.25rem;">@Model.Price.ToString("N0") VNĐ</span>
+                        </div>
+                    </div>
+
+                    <div class="row mb-4 align-items-center">
+                        <div class="col-sm-4 text-secondary fw-bold text-uppercase" style="font-size: 0.85rem; letter-spacing: 0.5px;">Tồn kho:</div>
+                        <div class="col-sm-8">
+                            @if(Model.StockQuantity > 0)
+                            {
+                                <span class="badge rounded-pill" style="background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); font-size: 0.9rem;">
+                                    <i class="fas fa-check-circle me-1"></i>Còn @Model.StockQuantity sản phẩm
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="badge rounded-pill" style="background: rgba(244, 63, 94, 0.2); color: #fb7185; border: 1px solid rgba(244, 63, 94, 0.3); font-size: 0.9rem;">
+                                    <i class="fas fa-times-circle me-1"></i>Hết hàng
+                                </span>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-sm-4 text-secondary fw-bold text-uppercase" style="font-size: 0.85rem; letter-spacing: 0.5px;">Mô tả:</div>
+                        <div class="col-sm-8">
+                            <div class="p-3 rounded-3" style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.05); color: #cbd5e1; line-height: 1.6;">
+                                @(string.IsNullOrEmpty(Model.Description) ? "Chưa có mô tả" : Model.Description)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer border-0 p-4" style="background: rgba(15, 23, 42, 0.6); border-radius: 0 0 1rem 1rem;">
+            <div class="d-flex gap-3 justify-content-end">
+                <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn px-4 py-2 rounded-pill fw-semibold" style="background: linear-gradient(135deg, #f59e0b, #d97706); color: white; border: none; box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);">
+                    <i class="fas fa-edit me-1"></i> Chỉnh sửa
+                </a>
+                <a asp-action="Index" class="btn px-4 py-2 rounded-pill fw-semibold" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #f8fafc;">
+                    <i class="fas fa-arrow-left me-1"></i> Quay lại
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

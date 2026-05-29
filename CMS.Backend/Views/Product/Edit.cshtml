@@ -1,0 +1,80 @@
+@model CMS.Data.Entities.Product
+
+@{
+    ViewData["Title"] = "Cập nhật Sản phẩm";
+}
+
+<div class="container mt-5">
+    <div class="card shadow-sm border-0 rounded-3">
+        <div class="card-header bg-warning text-dark py-3">
+            <h4 class="mb-0"><i class="fas fa-edit me-2"></i>Cập Nhật Sản Phẩm</h4>
+        </div>
+        <div class="card-body p-4">
+            <form asp-action="Edit">
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+                <input type="hidden" asp-for="Id" />
+                
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="mb-3">
+                            <label asp-for="Name" class="form-label fw-bold">Tên sản phẩm <span class="text-danger">*</span></label>
+                            <input asp-for="Name" class="form-control" />
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Description" class="form-label fw-bold">Mô tả chi tiết</label>
+                            <textarea asp-for="Description" class="form-control" rows="5"></textarea>
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-4">
+                        <div class="mb-3">
+                            <div class="text-center mb-3">
+                                <img src="@(string.IsNullOrEmpty(Model.ImageUrl) ? "https://via.placeholder.com/150x150?text=No+Img" : Model.ImageUrl)" 
+                                     class="img-thumbnail shadow-sm" style="max-height: 150px; object-fit: cover;" alt="Preview" />
+                            </div>
+                            <label asp-for="ImageUrl" class="form-label fw-bold">Đường dẫn ảnh (URL)</label>
+                            <input asp-for="ImageUrl" class="form-control" />
+                            <span asp-validation-for="ImageUrl" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="CategoryProductId" class="form-label fw-bold">Loại sản phẩm <span class="text-danger">*</span></label>
+                            <select asp-for="CategoryProductId" class="form-select" asp-items="ViewBag.CategoryProductId"></select>
+                            <span asp-validation-for="CategoryProductId" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Price" class="form-label fw-bold">Giá bán (VNĐ) <span class="text-danger">*</span></label>
+                            <input asp-for="Price" class="form-control" type="number" step="1000" min="0" />
+                            <span asp-validation-for="Price" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="StockQuantity" class="form-label fw-bold">Số lượng tồn kho <span class="text-danger">*</span></label>
+                            <input asp-for="StockQuantity" class="form-control" type="number" min="0" />
+                            <span asp-validation-for="StockQuantity" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <hr class="my-4" />
+
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-warning px-4 fw-bold text-dark">
+                        <i class="fas fa-save me-1"></i> Lưu thay đổi
+                    </button>
+                    <a asp-action="Index" class="btn btn-secondary px-4">
+                        <i class="fas fa-arrow-left me-1"></i> Quay lại
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

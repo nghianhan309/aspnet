@@ -1,0 +1,161 @@
+@model IEnumerable<CMS.Data.Entities.Product>
+
+@{
+    ViewData["Title"] = "Quản lý Sản phẩm";
+}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<div class="container mt-5">
+    <div class="product-card shadow-sm border-0">
+        <div class="product-header">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h3 class="mb-0 text-white fw-bold">
+                        <i class="fas fa-box-open me-2"></i>DANH SÁCH SẢN PHẨM
+                    </h3>
+                    <p class="text-white-50 small mb-0">Quản lý kho hàng và thông tin sản phẩm</p>
+                </div>
+                <a asp-action="Create" class="btn btn-add-new">
+                    <i class="fas fa-plus-circle me-1"></i> Thêm sản phẩm
+                </a>
+            </div>
+        </div>
+
+        <div class="p-0">
+            <table class="table table-hover mb-0 custom-product-table align-middle">
+                <thead>
+                    <tr>
+                        <th style="width: 5%" class="ps-4">ID</th>
+                        <th style="width: 10%">Hình ảnh</th>
+                        <th style="width: 25%">Tên sản phẩm</th>
+                        <th style="width: 15%">Loại sản phẩm</th>
+                        <th style="width: 15%">Giá bán</th>
+                        <th style="width: 10%">Tồn kho</th>
+                        <th style="width: 20%" class="text-end pe-4">Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null && Model.Any())
+                    {
+                        foreach (var item in Model)
+                        {
+                            <tr>
+                                <td class="ps-4"><span class="badge bg-light text-dark border">#@item.Id</span></td>
+                                <td>
+                                    <img src="@(string.IsNullOrEmpty(item.ImageUrl) ? "https://via.placeholder.com/80x80?text=No+Img" : Url.Content(item.ImageUrl.StartsWith("http") || item.ImageUrl.StartsWith("/") ? item.ImageUrl : "~/" + item.ImageUrl))" 
+                                         class="rounded-3 shadow-sm" style="width: 60px; height: 60px; object-fit: cover;" alt="@item.Name" />
+                                </td>
+                                <td>
+                                    <span class="fw-bold text-primary">@item.Name</span>
+                                </td>
+                                <td>
+                                    <span class="badge bg-info text-dark">@(item.CategoryProduct?.Name ?? "Chưa phân loại")</span>
+                                </td>
+                                <td>
+                                    <span class="fw-bold text-danger">@item.Price.ToString("N0") ₫</span>
+                                </td>
+                                <td>
+                                    @if(item.StockQuantity > 0)
+                                    {
+                                        <span class="badge bg-success">@item.StockQuantity</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-danger">Hết hàng</span>
+                                    }
+                                </td>
+                                <td class="text-end pe-4">
+                                    <div class="btn-group">
+                                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-warning btn-sm border-0 mx-1" title="Sửa">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-info btn-sm border-0 mx-1" title="Chi tiết">
+                                            <i class="fas fa-info-circle"></i>
+                                        </a>
+                                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-outline-danger btn-sm border-0 mx-1" title="Xóa">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="7" class="text-center py-5 text-muted">
+                                <i class="fas fa-box-open fs-1 mb-3"></i>
+                                <p class="mb-0">Chưa có sản phẩm nào trong hệ thống.</p>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card-footer bg-white py-3 text-center border-top">
+            <small class="text-muted">Hiển thị tổng số @(Model?.Count() ?? 0) sản phẩm</small>
+        </div>
+    </div>
+</div>
+
+<style>
+    .product-card {
+        background: #fff;
+        border-radius: 12px;
+        overflow: hidden;
+    }
+
+    .product-header {
+        background: linear-gradient(45deg, #1e3c72, #2a5298); /* Màu xanh đậm sang trọng */
+        padding: 1.5rem 2rem;
+    }
+
+    .btn-add-new {
+        background: #fff;
+        color: #1e3c72;
+        border: none;
+        padding: 8px 20px;
+        border-radius: 8px;
+        font-weight: 600;
+        transition: 0.3s;
+    }
+
+        .btn-add-new:hover {
+            background: #f8f9fa;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+    .custom-product-table thead {
+        background-color: #f8fbfd;
+    }
+
+        .custom-product-table thead th {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            color: #6c757d;
+            font-weight: 600;
+            padding: 15px 10px;
+            border-bottom: 2px solid #edf2f9;
+        }
+
+    .custom-product-table tbody tr {
+        transition: all 0.2s;
+    }
+
+        .custom-product-table tbody tr:hover {
+            background-color: #f0f7ff;
+        }
+
+    .custom-product-table td {
+        padding: 12px 10px;
+        border-bottom: 1px solid #edf2f9;
+    }
+
+    .btn-group .btn:hover {
+        transform: scale(1.2);
+        background-color: transparent;
+    }
+</style>

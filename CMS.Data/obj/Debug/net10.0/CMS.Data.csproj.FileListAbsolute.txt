@@ -1,0 +1,14 @@
+C:\Users\Admin\Downloads\asp-net-buoi-2\asp-net-main\asp-net-main\CMS.Data\bin\Debug\net10.0\CMS.Data.deps.json
+C:\Users\Admin\Downloads\asp-net-buoi-2\asp-net-main\asp-net-main\CMS.Data\bin\Debug\net10.0\CMS.Data.runtimeconfig.json
+C:\Users\Admin\Downloads\asp-net-buoi-2\asp-net-main\asp-net-main\CMS.Data\bin\Debug\net10.0\CMS.Data.dll
+C:\Users\Admin\Downloads\asp-net-buoi-2\asp-net-main\asp-net-main\CMS.Data\bin\Debug\net10.0\CMS.Data.pdb
+C:\Users\Admin\Downloads\asp-net-buoi-2\asp-net-main\asp-net-main\CMS.Data\obj\Debug\net10.0\CMS.Data.csproj.AssemblyReference.cache
+C:\Users\Admin\Downloads\asp-net-buoi-2\asp-net-main\asp-net-main\CMS.Data\obj\Debug\net10.0\CMS.Data.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Admin\Downloads\asp-net-buoi-2\asp-net-main\asp-net-main\CMS.Data\obj\Debug\net10.0\CMS.Data.AssemblyInfoInputs.cache
+C:\Users\Admin\Downloads\asp-net-buoi-2\asp-net-main\asp-net-main\CMS.Data\obj\Debug\net10.0\CMS.Data.AssemblyInfo.cs
+C:\Users\Admin\Downloads\asp-net-buoi-2\asp-net-main\asp-net-main\CMS.Data\obj\Debug\net10.0\CMS.Data.csproj.CoreCompileInputs.cache
+C:\Users\Admin\Downloads\asp-net-buoi-2\asp-net-main\asp-net-main\CMS.Data\obj\Debug\net10.0\CMS.Data.dll
+C:\Users\Admin\Downloads\asp-net-buoi-2\asp-net-main\asp-net-main\CMS.Data\obj\Debug\net10.0\refint\CMS.Data.dll
+C:\Users\Admin\Downloads\asp-net-buoi-2\asp-net-main\asp-net-main\CMS.Data\obj\Debug\net10.0\CMS.Data.pdb
+C:\Users\Admin\Downloads\asp-net-buoi-2\asp-net-main\asp-net-main\CMS.Data\obj\Debug\net10.0\CMS.Data.genruntimeconfig.cache
+C:\Users\Admin\Downloads\asp-net-buoi-2\asp-net-main\asp-net-main\CMS.Data\obj\Debug\net10.0\ref\CMS.Data.dll

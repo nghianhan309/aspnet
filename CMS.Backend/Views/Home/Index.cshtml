@@ -1,0 +1,342 @@
+@{
+    ViewData["Title"] = "Hệ thống CMS - Admin";
+}
+
+<div class="welcome-section py-4">
+    <div class="container-fluid px-4">
+        <div class="row align-items-center mb-5 hero-glass p-4 rounded-4 mx-0">
+            <div class="col-md-auto text-center text-md-start mb-4 mb-md-0 position-relative">
+                <div class="avatar-glow"></div>
+                <img src="https://ui-avatars.com/api/?name=Nguyen+Nghia+Nhan&background=38bdf8&color=fff&size=120"
+                     class="rounded-circle profile-img border-4 border-dark z-1 position-relative" alt="Avatar">
+            </div>
+            <div class="col-md text-center text-md-start px-md-4">
+                <h1 class="display-5 fw-bold mb-2">Chào mừng trở lại, <span class="text-gradient">Nghĩa Nhân</span></h1>
+                <p class="fs-5 text-slate-400 mb-4">Hệ thống quản trị nội dung CMS đa nền tảng. Bạn muốn quản lý gì hôm nay?</p>
+                <div class="d-flex justify-content-center justify-content-md-start gap-3">
+                    <button class="btn btn-primary-gradient px-4 py-2 fw-semibold rounded-pill d-flex align-items-center">
+                        <i class="fas fa-rocket me-2"></i> Tổng quan
+                    </button>
+                    <a href="https://learn.microsoft.com/aspnet/core" target="_blank" class="btn btn-glass px-4 py-2 fw-semibold rounded-pill d-flex align-items-center">
+                        <i class="fab fa-microsoft me-2"></i> Tài liệu .NET
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-auto d-none d-xl-block">
+                <div class="stat-glass text-center p-3 rounded-4">
+                    <h3 class="fw-bold text-white mb-0">12,450</h3>
+                    <span class="text-slate-400 small text-uppercase tracking-wide">Truy cập hôm nay</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="d-flex align-items-center mb-4">
+            <h4 class="fw-bold mb-0 me-3 text-white">Quản lý hệ thống</h4>
+            <div class="flex-grow-1" style="height: 1px; background: linear-gradient(90deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 100%);"></div>
+        </div>
+
+        <div class="row g-4">
+            <!-- Sản phẩm -->
+            <div class="col-xl-3 col-lg-4 col-md-6">
+                <a asp-controller="Product" asp-action="Index" class="card-shortcut text-decoration-none d-block h-100">
+                    <div class="card-glass h-100 p-4 rounded-4 position-relative overflow-hidden">
+                        <div class="glow-blob bg-blue"></div>
+                        <div class="d-flex justify-content-between align-items-start mb-4 position-relative z-1">
+                            <div class="icon-box bg-blue-500 text-white rounded-3 shadow-lg">
+                                <i class="fas fa-box-open fs-4"></i>
+                            </div>
+                            <span class="badge bg-white bg-opacity-10 text-white rounded-pill border border-light border-opacity-10 px-3 py-2"><i class="fas fa-arrow-right"></i></span>
+                        </div>
+                        <h4 class="fw-bold text-white mb-2 position-relative z-1">Sản phẩm</h4>
+                        <p class="text-slate-400 mb-0 small position-relative z-1">Quản lý danh sách sản phẩm và kiểm soát tồn kho.</p>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Danh mục SP -->
+            <div class="col-xl-3 col-lg-4 col-md-6">
+                <a asp-controller="CategoryProduct" asp-action="Index" class="card-shortcut text-decoration-none d-block h-100">
+                    <div class="card-glass h-100 p-4 rounded-4 position-relative overflow-hidden">
+                        <div class="glow-blob bg-indigo"></div>
+                        <div class="d-flex justify-content-between align-items-start mb-4 position-relative z-1">
+                            <div class="icon-box bg-indigo-500 text-white rounded-3 shadow-lg">
+                                <i class="fas fa-layer-group fs-4"></i>
+                            </div>
+                            <span class="badge bg-white bg-opacity-10 text-white rounded-pill border border-light border-opacity-10 px-3 py-2"><i class="fas fa-arrow-right"></i></span>
+                        </div>
+                        <h4 class="fw-bold text-white mb-2 position-relative z-1">Phân loại</h4>
+                        <p class="text-slate-400 mb-0 small position-relative z-1">Quản lý nhóm sản phẩm và phân loại hàng hóa.</p>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Khách hàng -->
+            <div class="col-xl-3 col-lg-4 col-md-6">
+                <a asp-controller="Customer" asp-action="Index" class="card-shortcut text-decoration-none d-block h-100">
+                    <div class="card-glass h-100 p-4 rounded-4 position-relative overflow-hidden">
+                        <div class="glow-blob bg-emerald"></div>
+                        <div class="d-flex justify-content-between align-items-start mb-4 position-relative z-1">
+                            <div class="icon-box bg-emerald-500 text-white rounded-3 shadow-lg">
+                                <i class="fas fa-users fs-4"></i>
+                            </div>
+                            <span class="badge bg-white bg-opacity-10 text-white rounded-pill border border-light border-opacity-10 px-3 py-2"><i class="fas fa-arrow-right"></i></span>
+                        </div>
+                        <h4 class="fw-bold text-white mb-2 position-relative z-1">Khách hàng</h4>
+                        <p class="text-slate-400 mb-0 small position-relative z-1">Theo dõi thông tin và phân tích dữ liệu khách hàng.</p>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Đơn hàng -->
+            <div class="col-xl-3 col-lg-4 col-md-6">
+                <a asp-controller="Order" asp-action="Index" class="card-shortcut text-decoration-none d-block h-100">
+                    <div class="card-glass h-100 p-4 rounded-4 position-relative overflow-hidden">
+                        <div class="glow-blob bg-rose"></div>
+                        <div class="d-flex justify-content-between align-items-start mb-4 position-relative z-1">
+                            <div class="icon-box bg-rose-500 text-white rounded-3 shadow-lg">
+                                <i class="fas fa-cart-shopping fs-4"></i>
+                            </div>
+                            <span class="badge bg-white bg-opacity-10 text-white rounded-pill border border-light border-opacity-10 px-3 py-2"><i class="fas fa-arrow-right"></i></span>
+                        </div>
+                        <h4 class="fw-bold text-white mb-2 position-relative z-1">Đơn hàng</h4>
+                        <p class="text-slate-400 mb-0 small position-relative z-1">Kiểm soát giao dịch, trạng thái và lịch sử đơn hàng.</p>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Bài viết -->
+            <div class="col-xl-3 col-lg-4 col-md-6">
+                <a asp-controller="Post" asp-action="Index" class="card-shortcut text-decoration-none d-block h-100">
+                    <div class="card-glass h-100 p-4 rounded-4 position-relative overflow-hidden">
+                        <div class="glow-blob bg-amber"></div>
+                        <div class="d-flex justify-content-between align-items-start mb-4 position-relative z-1">
+                            <div class="icon-box bg-amber-500 text-white rounded-3 shadow-lg">
+                                <i class="fas fa-file-alt fs-4"></i>
+                            </div>
+                            <span class="badge bg-white bg-opacity-10 text-white rounded-pill border border-light border-opacity-10 px-3 py-2"><i class="fas fa-arrow-right"></i></span>
+                        </div>
+                        <h4 class="fw-bold text-white mb-2 position-relative z-1">Bài viết</h4>
+                        <p class="text-slate-400 mb-0 small position-relative z-1">Quản lý tin tức, bài viết và nội dung blog.</p>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Danh mục Bài viết -->
+            <div class="col-xl-3 col-lg-4 col-md-6">
+                <a asp-controller="Category" asp-action="Index" class="card-shortcut text-decoration-none d-block h-100">
+                    <div class="card-glass h-100 p-4 rounded-4 position-relative overflow-hidden">
+                        <div class="glow-blob bg-cyan"></div>
+                        <div class="d-flex justify-content-between align-items-start mb-4 position-relative z-1">
+                            <div class="icon-box bg-cyan-500 text-white rounded-3 shadow-lg">
+                                <i class="fas fa-tags fs-4"></i>
+                            </div>
+                            <span class="badge bg-white bg-opacity-10 text-white rounded-pill border border-light border-opacity-10 px-3 py-2"><i class="fas fa-arrow-right"></i></span>
+                        </div>
+                        <h4 class="fw-bold text-white mb-2 position-relative z-1">Chủ đề</h4>
+                        <p class="text-slate-400 mb-0 small position-relative z-1">Phân loại chủ đề và quản lý danh mục bài viết.</p>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Người dùng -->
+            <div class="col-xl-3 col-lg-4 col-md-6">
+                <a asp-controller="User" asp-action="Index" class="card-shortcut text-decoration-none d-block h-100">
+                    <div class="card-glass h-100 p-4 rounded-4 position-relative overflow-hidden">
+                        <div class="glow-blob bg-violet"></div>
+                        <div class="d-flex justify-content-between align-items-start mb-4 position-relative z-1">
+                            <div class="icon-box bg-violet-500 text-white rounded-3 shadow-lg">
+                                <i class="fas fa-user-shield fs-4"></i>
+                            </div>
+                            <span class="badge bg-white bg-opacity-10 text-white rounded-pill border border-light border-opacity-10 px-3 py-2"><i class="fas fa-arrow-right"></i></span>
+                        </div>
+                        <h4 class="fw-bold text-white mb-2 position-relative z-1">Quản trị viên</h4>
+                        <p class="text-slate-400 mb-0 small position-relative z-1">Quản lý biên tập viên và quyền truy cập hệ thống.</p>
+                    </div>
+                </a>
+            </div>
+            
+             <!-- Chi tiết đơn hàng -->
+            <div class="col-xl-3 col-lg-4 col-md-6">
+                <a asp-controller="OrderDetail" asp-action="Index" class="card-shortcut text-decoration-none d-block h-100">
+                    <div class="card-glass h-100 p-4 rounded-4 position-relative overflow-hidden">
+                        <div class="glow-blob bg-slate"></div>
+                        <div class="d-flex justify-content-between align-items-start mb-4 position-relative z-1">
+                            <div class="icon-box bg-slate-500 text-white rounded-3 shadow-lg">
+                                <i class="fas fa-file-invoice-dollar fs-4"></i>
+                            </div>
+                            <span class="badge bg-white bg-opacity-10 text-white rounded-pill border border-light border-opacity-10 px-3 py-2"><i class="fas fa-arrow-right"></i></span>
+                        </div>
+                        <h4 class="fw-bold text-white mb-2 position-relative z-1">Chi tiết hóa đơn</h4>
+                        <p class="text-slate-400 mb-0 small position-relative z-1">Xem thông tin chi tiết từng sản phẩm trong đơn hàng.</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Premium Colors & Gradients */
+    :root {
+        --color-primary: #38bdf8;
+        --color-secondary: #818cf8;
+        --color-accent: #c084fc;
+        --glass-bg: rgba(30, 41, 59, 0.5);
+        --glass-border: rgba(255, 255, 255, 0.08);
+    }
+
+    /* Text Utilities */
+    .text-slate-400 { color: #94a3b8 !important; }
+    .tracking-wide { letter-spacing: 0.05em; }
+    
+    .text-gradient {
+        background: linear-gradient(135deg, var(--color-primary), var(--color-secondary), var(--color-accent));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    /* Glassmorphism Classes */
+    .hero-glass {
+        background: linear-gradient(145deg, rgba(30, 41, 59, 0.6) 0%, rgba(15, 23, 42, 0.4) 100%);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid var(--glass-border);
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    .stat-glass {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
+        min-width: 150px;
+    }
+
+    .card-glass {
+        background: var(--glass-bg);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid var(--glass-border);
+        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .card-shortcut:hover .card-glass {
+        transform: translateY(-8px);
+        border-color: rgba(255, 255, 255, 0.15);
+        box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.6);
+        background: rgba(45, 55, 72, 0.6);
+    }
+
+    /* Glow Effects */
+    .glow-blob {
+        position: absolute;
+        width: 120px;
+        height: 120px;
+        filter: blur(60px);
+        border-radius: 50%;
+        top: -20px;
+        right: -20px;
+        opacity: 0.15;
+        transition: opacity 0.4s ease;
+    }
+    
+    .card-shortcut:hover .glow-blob {
+        opacity: 0.3;
+    }
+
+    .avatar-glow {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 120px;
+        height: 120px;
+        background: var(--color-primary);
+        filter: blur(30px);
+        border-radius: 50%;
+        opacity: 0.4;
+        z-index: 0;
+        animation: pulse 3s infinite;
+    }
+
+    /* Buttons */
+    .btn-primary-gradient {
+        background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+        color: white;
+        border: none;
+        box-shadow: 0 4px 15px rgba(56, 189, 248, 0.3);
+        transition: all 0.3s ease;
+    }
+
+    .btn-primary-gradient:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(56, 189, 248, 0.5);
+        color: white;
+    }
+
+    .btn-glass {
+        background: rgba(255, 255, 255, 0.05);
+        color: #e2e8f0;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        transition: all 0.3s ease;
+    }
+
+    .btn-glass:hover {
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+        border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    /* Icons Box */
+    .icon-box {
+        width: 52px;
+        height: 52px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: transform 0.4s ease;
+    }
+
+    .card-shortcut:hover .icon-box {
+        transform: scale(1.1) rotate(5deg);
+    }
+
+    /* Semantic Colors */
+    .bg-blue-500 { background-color: #3b82f6; }
+    .bg-blue { background-color: #3b82f6; }
+    
+    .bg-indigo-500 { background-color: #6366f1; }
+    .bg-indigo { background-color: #6366f1; }
+    
+    .bg-emerald-500 { background-color: #10b981; }
+    .bg-emerald { background-color: #10b981; }
+    
+    .bg-rose-500 { background-color: #f43f5e; }
+    .bg-rose { background-color: #f43f5e; }
+    
+    .bg-amber-500 { background-color: #f59e0b; }
+    .bg-amber { background-color: #f59e0b; }
+    
+    .bg-cyan-500 { background-color: #06b6d4; }
+    .bg-cyan { background-color: #06b6d4; }
+    
+    .bg-violet-500 { background-color: #8b5cf6; }
+    .bg-violet { background-color: #8b5cf6; }
+
+    .bg-slate-500 { background-color: #64748b; }
+    .bg-slate { background-color: #64748b; }
+
+    /* Animations */
+    @@keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(30px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    
+    @@keyframes pulse {
+        0% { transform: translate(-50%, -50%) scale(0.95); opacity: 0.3; }
+        50% { transform: translate(-50%, -50%) scale(1.05); opacity: 0.5; }
+        100% { transform: translate(-50%, -50%) scale(0.95); opacity: 0.3; }
+    }
+</style>

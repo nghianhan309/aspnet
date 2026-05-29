@@ -1,0 +1,53 @@
+@model CMS.Data.Entities.Product
+
+@{
+    ViewData["Title"] = "Xóa Sản phẩm";
+}
+
+<div class="container mt-5">
+    <div class="card shadow-sm border-0 rounded-3 border-danger border-top border-4">
+        <div class="card-header bg-white py-3">
+            <h4 class="mb-0 text-danger"><i class="fas fa-exclamation-triangle me-2"></i>Xác Nhận Xóa Sản Phẩm</h4>
+        </div>
+        <div class="card-body p-4 bg-light">
+            <p class="fs-5 text-dark">Bạn có chắc chắn muốn xóa sản phẩm này không? Hành động này không thể hoàn tác.</p>
+            
+            <div class="bg-white p-4 rounded-3 border mt-4">
+                <div class="row d-flex align-items-center">
+                    <div class="col-md-3 text-center mb-3 mb-md-0">
+                        <img src="@(string.IsNullOrEmpty(Model.ImageUrl) ? "https://via.placeholder.com/150x150?text=No+Img" : Model.ImageUrl)" 
+                             class="img-thumbnail shadow-sm" style="max-height: 150px; object-fit: cover;" alt="@Model.Name" />
+                    </div>
+                    <div class="col-md-9">
+                        <dl class="row mb-0">
+                            <dt class="col-sm-4 text-muted">Mã sản phẩm</dt>
+                            <dd class="col-sm-8 fw-bold">#@Model.Id</dd>
+
+                            <dt class="col-sm-4 text-muted">Tên sản phẩm</dt>
+                            <dd class="col-sm-8 fw-bold text-danger fs-5">@Model.Name</dd>
+
+                            <dt class="col-sm-4 text-muted">Loại sản phẩm</dt>
+                            <dd class="col-sm-8">@(Model.CategoryProduct?.Name ?? "Chưa phân loại")</dd>
+
+                            <dt class="col-sm-4 text-muted">Giá bán</dt>
+                            <dd class="col-sm-8 fw-bold text-danger">@Model.Price.ToString("N0") VNĐ</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer bg-white p-3 border-top-0">
+            <form asp-action="Delete">
+                <input type="hidden" asp-for="Id" />
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-danger px-4 fw-bold">
+                        <i class="fas fa-trash-alt me-1"></i> Xác nhận xóa
+                    </button>
+                    <a asp-action="Index" class="btn btn-secondary px-4">
+                        <i class="fas fa-times me-1"></i> Hủy
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
