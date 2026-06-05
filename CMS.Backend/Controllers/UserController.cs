@@ -1,13 +1,14 @@
-﻿using CMS.Data;
+using CMS.Data;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CMS.Backend.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class UserController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        // Inject DbContext
         public UserController(ApplicationDbContext context)
         {
             _context = context;
@@ -16,10 +17,91 @@ namespace CMS.Backend.Controllers
         // Danh sách người dùng
         public IActionResult Index()
         {
-            // Lấy dữ liệu thật từ database
             var userList = _context.Users.ToList();
-
             return View(userList);
+        }
+
+        // GET: User/Create
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        // POST: User/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Create(CMS.Data.Entities.User user)
+        {
+            if (ModelState.IsValid)
+            {
+                if (_context.Users.Any(u => u.Username == user.Username))
+                {
+                    ModelState.AddModelError("Username", "Tên đăng nhập này đã tồn tại!");
+                    return View(user);
+                }
+                _context.Add(user);
+                _context.SaveChanges();
+                return RedirectToAction(nameof(Index));
+            }
+            return View(user);
+        }
+
+        // GET: User/Edit/5
+        public IActionResult Edit(int? id)
+        {
+            if (id == null) return NotFound();
+
+            var user = _context.Users.Find(id);
+            if (user == null) return NotFound();
+
+            return View(user);
+        }
+
+        // POST: User/Edit/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(int id, CMS.Data.Entities.User user)
+        {
+            if (id != user.Id) return NotFound();
+
+            if (ModelState.IsValid)
+            {
+                // Kiểm tra trùng username (trừ chính user đang sửa)
+                if (_context.Users.Any(u => u.Username == user.Username && u.Id != id))
+                {
+                    ModelState.AddModelError("Username", "Tên đăng nhập này đã tồn tại!");
+                    return View(user);
+                }
+                _context.Update(user);
+                _context.SaveChanges();
+                return RedirectToAction(nameof(Index));
+            }
+            return View(user);
+        }
+
+        // GET: User/Delete/5
+        public IActionResult Delete(int? id)
+        {
+            if (id == null) return NotFound();
+
+            var user = _context.Users.FirstOrDefault(m => m.Id == id);
+            if (user == null) return NotFound();
+
+            return View(user);
+        }
+
+        // POST: User/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public IActionResult DeleteConfirmed(int id)
+        {
+            var user = _context.Users.Find(id);
+            if (user != null)
+            {
+                _context.Users.Remove(user);
+            }
+            _context.SaveChanges();
+            return RedirectToAction(nameof(Index));
         }
     }
 }

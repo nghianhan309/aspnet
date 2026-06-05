@@ -12,3 +12,4 @@ C:\Users\Admin\Downloads\asp-net-buoi-2\asp-net-main\asp-net-main\CMS.Data\obj\D
 C:\Users\Admin\Downloads\asp-net-buoi-2\asp-net-main\asp-net-main\CMS.Data\obj\Debug\net10.0\CMS.Data.pdb
 C:\Users\Admin\Downloads\asp-net-buoi-2\asp-net-main\asp-net-main\CMS.Data\obj\Debug\net10.0\CMS.Data.genruntimeconfig.cache
 C:\Users\Admin\Downloads\asp-net-buoi-2\asp-net-main\asp-net-main\CMS.Data\obj\Debug\net10.0\ref\CMS.Data.dll
+C:\Users\Admin\Downloads\asp-net-buoi-2\asp-net-main\asp-net-main\CMS.Data\obj\Debug\net10.0\CMS.Data.sourcelink.json

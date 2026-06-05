@@ -309,4 +309,10 @@ C:\Users\Admin\Downloads\asp-net-buoi-2\asp-net-main\asp-net-main\CMS.Backend\ob
 C:\Users\Admin\Downloads\asp-net-buoi-2\asp-net-main\asp-net-main\CMS.Backend\obj\Debug\net10.0\CMS.Backend.pdb
 C:\Users\Admin\Downloads\asp-net-buoi-2\asp-net-main\asp-net-main\CMS.Backend\obj\Debug\net10.0\CMS.Backend.genruntimeconfig.cache
 C:\Users\Admin\Downloads\asp-net-buoi-2\asp-net-main\asp-net-main\CMS.Backend\obj\Debug\net10.0\ref\CMS.Backend.dll
+C:\Users\Admin\Downloads\asp-net-buoi-2\asp-net-main\asp-net-main\CMS.Backend\obj\Debug\net10.0\CMS.Backend.sourcelink.json
+C:\Users\Admin\Downloads\asp-net-buoi-2\asp-net-main\asp-net-main\CMS.Backend\obj\Debug\net10.0\CMS.Backend.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\Admin\Downloads\asp-net-buoi-2\asp-net-main\asp-net-main\CMS.Backend\bin\Debug\net10.0\Microsoft.OpenApi.dll
+C:\Users\Admin\Downloads\asp-net-buoi-2\asp-net-main\asp-net-main\CMS.Backend\bin\Debug\net10.0\Swashbuckle.AspNetCore.Swagger.dll
+C:\Users\Admin\Downloads\asp-net-buoi-2\asp-net-main\asp-net-main\CMS.Backend\bin\Debug\net10.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+C:\Users\Admin\Downloads\asp-net-buoi-2\asp-net-main\asp-net-main\CMS.Backend\bin\Debug\net10.0\Swashbuckle.AspNetCore.SwaggerUI.dll
 C:\Users\Admin\Downloads\asp-net-buoi-2\asp-net-main\asp-net-main\CMS.Backend\obj\Debug\net10.0\staticwebassets.upToDateCheck.txt

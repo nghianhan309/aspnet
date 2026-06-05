@@ -1,0 +1,52 @@
+@model CMS.Data.Entities.CategoryProduct
+
+@{
+    ViewData["Title"] = "Xác nhận xóa danh mục";
+}
+
+<div class="container-fluid mt-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+            <div class="card shadow-sm border-0 rounded-4" style="background: rgba(30, 41, 59, 0.5); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(244, 63, 94, 0.15) !important;">
+
+                <div class="card-body p-5 text-center text-light">
+                    <div class="mb-4" style="font-size: 5rem; line-height: 1;">
+                        <i class="fas fa-layer-group" style="color: rgba(244, 63, 94, 0.7);"></i>
+                    </div>
+
+                    <h2 class="fw-bold mb-3">XÁC NHẬN XÓA DANH MỤC?</h2>
+                    <p class="text-secondary fs-5 mb-4">
+                        Danh mục <strong class="text-white">"@Model.Name"</strong> sẽ bị xóa vĩnh viễn. Thao tác này không thể hoàn tác!
+                    </p>
+
+                    <div class="p-3 rounded-3 mb-4 text-start" style="background: rgba(244, 63, 94, 0.08); border: 1px solid rgba(244, 63, 94, 0.2);">
+                        <div class="row mb-2">
+                            <div class="col-sm-4 text-muted">ID:</div>
+                            <div class="col-sm-8 fw-bold text-info">#@Model.Id</div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-sm-4 text-muted">Tên danh mục:</div>
+                            <div class="col-sm-8 fw-bold text-white">@Model.Name</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4 text-muted">Mô tả:</div>
+                            <div class="col-sm-8 text-secondary">@(string.IsNullOrEmpty(Model.Description) ? "Chưa có mô tả" : Model.Description)</div>
+                        </div>
+                    </div>
+
+                    <form asp-action="Delete">
+                        <input type="hidden" asp-for="Id" />
+                        <div class="d-flex justify-content-center gap-3">
+                            <button type="submit" class="btn btn-danger px-4 py-2 rounded-pill fw-semibold border-0" style="background: linear-gradient(135deg, #e74a3b, #c0392b); box-shadow: 0 4px 15px rgba(231, 74, 59, 0.3);">
+                                <i class="fas fa-trash-alt me-1"></i> Có, xóa ngay
+                            </button>
+                            <a asp-action="Index" class="btn px-4 py-2 rounded-pill fw-semibold" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #f8fafc;">
+                                <i class="fas fa-times me-1"></i> Hủy bỏ
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,123 @@
+<style>
+    /* ===== SHARED SAAS TABLE STYLES ===== */
+
+    .saas-card {
+        background: #fff;
+        border-radius: 14px;
+        overflow: hidden;
+        border: 1px solid #E5E7EB;
+        box-shadow: 0 1px 6px rgba(0,0,0,0.06);
+    }
+
+    .saas-card-header {
+        background: linear-gradient(45deg, #1e3c72, #2a5298);
+        padding: 1.4rem 1.8rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
+    .saas-card-footer {
+        background: #FAFAFA;
+        border-top: 1px solid #E5E7EB;
+        padding: 10px 20px;
+        text-align: center;
+    }
+
+    /* Add new button */
+    .btn-add-new {
+        background: #ffffff;
+        color: #1e3c72;
+        border: none;
+        padding: 8px 18px;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 0.875rem;
+        transition: all 0.25s;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        white-space: nowrap;
+    }
+
+    .btn-add-new:hover {
+        background: #f0f4ff;
+        color: #1e3c72;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+    /* Table */
+    .saas-table thead th {
+        background: #F8FBFD;
+        font-size: 0.78rem;
+        text-transform: uppercase;
+        color: #6B7280;
+        font-weight: 700;
+        padding: 14px 12px;
+        border-bottom: 2px solid #E5E7EB;
+        letter-spacing: 0.05em;
+        white-space: nowrap;
+    }
+
+    .saas-table tbody td {
+        padding: 13px 12px;
+        border-bottom: 1px solid #F3F4F6;
+        font-size: 0.875rem;
+        color: #374151;
+        vertical-align: middle;
+    }
+
+    .saas-table tbody tr:last-child td {
+        border-bottom: none;
+    }
+
+    .saas-table tbody tr {
+        transition: background 0.15s ease;
+    }
+
+    .saas-table tbody tr:hover {
+        background: #F0F7FF;
+    }
+
+    /* Action buttons hover */
+    .saas-table .btn-group .btn {
+        width: 30px;
+        height: 30px;
+        padding: 0;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 7px !important;
+        font-size: 0.8rem;
+        transition: all 0.2s;
+    }
+
+    .saas-table .btn-group .btn:hover {
+        transform: translateY(-2px) scale(1.1);
+    }
+
+    .saas-table .btn-outline-warning { background: #FEF3C7; color: #D97706; }
+    .saas-table .btn-outline-warning:hover { background: #F59E0B; color: white; }
+
+    .saas-table .btn-outline-danger { background: #FEE2E2; color: #EF4444; }
+    .saas-table .btn-outline-danger:hover { background: #EF4444; color: white; }
+
+    .saas-table .btn-outline-info { background: #DBEAFE; color: #3B82F6; }
+    .saas-table .btn-outline-info:hover { background: #3B82F6; color: white; }
+
+    /* Responsive */
+    @@media (max-width: 768px) {
+        .saas-card-header {
+            padding: 1rem 1.2rem;
+        }
+        .saas-table thead th,
+        .saas-table tbody td {
+            padding: 10px 8px;
+            font-size: 0.8rem;
+        }
+    }
+</style>

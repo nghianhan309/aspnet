@@ -1,0 +1,63 @@
+@model CMS.Data.Entities.User
+
+@{
+    ViewData["Title"] = "Xác nhận xóa tài khoản";
+    bool isAdmin = Model.Role != null && Model.Role.Contains("Admin");
+}
+
+<div class="container-fluid mt-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+            <div class="card shadow-sm border-0 rounded-4" style="background: rgba(30, 41, 59, 0.5); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(244, 63, 94, 0.15) !important;">
+
+                <div class="card-body p-5 text-center text-light">
+                    <div class="mb-4">
+                        <div class="d-inline-flex align-items-center justify-content-center rounded-circle mb-3" style="width: 80px; height: 80px; background: rgba(244,63,94,0.1); font-size: 2.5rem;">
+                            @Model.Username.Substring(0, 1).ToUpper()
+                        </div>
+                    </div>
+
+                    <h2 class="fw-bold mb-3">XÁC NHẬN XÓA TÀI KHOẢN?</h2>
+                    <p class="text-secondary fs-5 mb-4">
+                        Tài khoản <strong class="text-white">"@Model.Username"</strong> sẽ bị xóa vĩnh viễn khỏi hệ thống!
+                    </p>
+
+                    <div class="p-3 rounded-3 mb-4 text-start" style="background: rgba(244, 63, 94, 0.08); border: 1px solid rgba(244, 63, 94, 0.2);">
+                        <div class="row mb-2">
+                            <div class="col-sm-5 text-muted">ID:</div>
+                            <div class="col-sm-7 fw-bold text-info">#@Model.Id</div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-sm-5 text-muted">Tên đăng nhập:</div>
+                            <div class="col-sm-7 fw-bold text-white">@Model.Username</div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-sm-5 text-muted">Họ và tên:</div>
+                            <div class="col-sm-7">@(string.IsNullOrEmpty(Model.FullName) ? "---" : Model.FullName)</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-5 text-muted">Vai trò:</div>
+                            <div class="col-sm-7">
+                                <span class="badge rounded-pill" style="background: @(isAdmin ? "rgba(231,74,59,0.15)" : "rgba(54,185,204,0.15)"); color: @(isAdmin ? "#fda4af" : "#36b9cc"); border: 1px solid @(isAdmin ? "rgba(231,74,59,0.3)" : "rgba(54,185,204,0.3)");">
+                                    @Model.Role
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <form asp-action="Delete">
+                        <input type="hidden" asp-for="Id" />
+                        <div class="d-flex justify-content-center gap-3">
+                            <button type="submit" class="btn btn-danger px-4 py-2 rounded-pill fw-semibold border-0" style="background: linear-gradient(135deg, #e74a3b, #c0392b); box-shadow: 0 4px 15px rgba(231, 74, 59, 0.3);">
+                                <i class="fas fa-trash-alt me-1"></i> Có, xóa ngay
+                            </button>
+                            <a asp-action="Index" class="btn px-4 py-2 rounded-pill fw-semibold" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #f8fafc;">
+                                <i class="fas fa-times me-1"></i> Hủy bỏ
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

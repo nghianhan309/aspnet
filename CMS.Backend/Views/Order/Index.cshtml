@@ -1,177 +1,190 @@
-﻿@model IEnumerable<CMS.Data.Entities.Order>
+@model IEnumerable<CMS.Data.Entities.Order>
 
 @{
-    ViewData["Title"] = "Danh sách đơn hàng";
+    ViewData["Title"] = "Đơn hàng";
+    int total    = Model?.Count() ?? 0;
+    int pending  = Model?.Count(o => o.Status == 0) ?? 0;
+    int shipping = Model?.Count(o => o.Status == 1) ?? 0;
+    int done     = Model?.Count(o => o.Status == 2) ?? 0;
 }
 
-<link rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<!-- STAT MINI CARDS -->
+<div class="row g-3 mb-4">
+    <div class="col-6 col-md-3">
+        <div class="mini-stat" style="--c:#7C3AED;--cl:#EDE9FE;">
+            <div class="mini-stat-icon"><i class="fas fa-shopping-cart"></i></div>
+            <div>
+                <div class="mini-stat-val">@total</div>
+                <div class="mini-stat-lbl">Tổng đơn hàng</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-6 col-md-3">
+        <div class="mini-stat" style="--c:#F59E0B;--cl:#FEF3C7;">
+            <div class="mini-stat-icon"><i class="fas fa-clock"></i></div>
+            <div>
+                <div class="mini-stat-val">@pending</div>
+                <div class="mini-stat-lbl">Chờ duyệt</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-6 col-md-3">
+        <div class="mini-stat" style="--c:#3B82F6;--cl:#DBEAFE;">
+            <div class="mini-stat-icon"><i class="fas fa-truck"></i></div>
+            <div>
+                <div class="mini-stat-val">@shipping</div>
+                <div class="mini-stat-lbl">Đang giao</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-6 col-md-3">
+        <div class="mini-stat" style="--c:#22C55E;--cl:#DCFCE7;">
+            <div class="mini-stat-icon"><i class="fas fa-check-circle"></i></div>
+            <div>
+                <div class="mini-stat-val">@done</div>
+                <div class="mini-stat-lbl">Hoàn thành</div>
+            </div>
+        </div>
+    </div>
+</div>
 
-<div class="container mt-5">
-
-    <div class="order-card shadow-lg border-0">
+<!-- MAIN TABLE CARD -->
+<div class="container-fluid px-0">
+    <div class="saas-card">
 
         <!-- HEADER -->
-        <div class="header-custom">
-
-            <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
-
-                <div>
-
-                    <h2 class="text-white fw-bold mb-1">
-                        <i class="fas fa-cart-shopping me-2"></i>
-                        Quản lý đơn hàng
-                    </h2>
-
-                    <small class="text-white-50">
-                        Tổng cộng @(Model?.Count() ?? 0) đơn hàng
-                    </small>
-
-                </div>
-
-                <button class="btn btn-light btn-sm fw-bold">
-
-                    <i class="fas fa-plus me-1"></i>
-                    Tạo đơn hàng
-
-                </button>
-
+        <div class="saas-card-header">
+            <div>
+                <h3 class="mb-0 text-white fw-bold">
+                    <i class="fas fa-shopping-cart me-2"></i>QUẢN LÝ ĐƠN HÀNG
+                </h3>
+                <p class="text-white-50 small mb-0">Kiểm soát giao dịch và trạng thái đơn hàng</p>
             </div>
-
+            <a asp-action="Create" class="btn btn-add-new">
+                <i class="fas fa-plus-circle me-1"></i> Tạo đơn hàng
+            </a>
         </div>
 
         <!-- TABLE -->
-        <div class="table-responsive p-4">
-
-            <table class="table table-hover align-middle custom-table">
-
+        <div class="p-0">
+            <table class="table table-hover mb-0 saas-table align-middle">
                 <thead>
                     <tr>
-                        <th>ID</th>
-                        <th>Ngày đặt</th>
-                        <th>Customer ID</th>
-                        <th>Trạng thái</th>
-                        <th>Ghi chú</th>
+                        <th class="ps-4" style="width:7%">ID</th>
+                        <th style="width:22%">Khách hàng</th>
+                        <th style="width:15%">Ngày đặt</th>
+                        <th style="width:15%">Trạng thái</th>
+                        <th style="width:28%">Ghi chú</th>
+                        <th class="text-end pe-4" style="width:13%">Hành động</th>
                     </tr>
                 </thead>
-
                 <tbody>
-
                     @if (Model != null && Model.Any())
                     {
                         foreach (var item in Model)
                         {
-                            bool completed = item.Status == 1;
+                            string statusText, statusClass;
+                            if      (item.Status == 0) { statusText = "Chờ duyệt";  statusClass = "badge-order-pending"; }
+                            else if (item.Status == 1) { statusText = "Đang giao";  statusClass = "badge-order-shipping"; }
+                            else                       { statusText = "Hoàn thành"; statusClass = "badge-order-done"; }
+
+                            var initial = (item.Customer?.FullName ?? "?").Trim().Substring(0, 1).ToUpper();
 
                             <tr>
-
-                                <td class="fw-bold text-muted">
-                                    #@item.Id
+                                <td class="ps-4">
+                                    <span class="fw-bold text-primary">#@item.Id</span>
                                 </td>
-
                                 <td>
-                                    @item.OrderDate.ToString("dd/MM/yyyy")
+                                    <div class="d-flex align-items-center gap-2">
+                                        <div class="cust-avatar-sm">@initial</div>
+                                        <span class="fw-semibold text-dark">@(item.Customer?.FullName ?? "—")</span>
+                                    </div>
                                 </td>
-
+                                <td class="text-muted">@item.OrderDate.ToString("dd/MM/yyyy")</td>
                                 <td>
-                                    KH-@item.CustomerId
+                                    <span class="order-status @statusClass">@statusText</span>
                                 </td>
-
-                                <td>
-
-                                    <span class="status-badge @(completed ? "status-success" : "status-pending")">
-
-                                        <i class="fas @(completed ? "fa-circle-check" : "fa-clock") me-1"></i>
-
-                                        @(completed ? "Đã xác nhận" : "Chờ xử lý")
-
-                                    </span>
-
+                                <td class="text-muted text-truncate" style="max-width:220px;">
+                                    @(string.IsNullOrEmpty(item.Notes) ? "—" : item.Notes)
                                 </td>
-
-                                <td>
-                                    @item.Notes
+                                <td class="text-end pe-4">
+                                    <div class="btn-group">
+                                        <a asp-action="Edit" asp-route-id="@item.Id"
+                                           class="btn btn-outline-warning btn-sm border-0 mx-1" title="Sửa">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <a asp-action="Delete" asp-route-id="@item.Id"
+                                           class="btn btn-outline-danger btn-sm border-0 mx-1" title="Xóa">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </a>
+                                    </div>
                                 </td>
-
                             </tr>
                         }
                     }
                     else
                     {
                         <tr>
-
-                            <td colspan="5"
-                                class="text-center py-5 text-muted">
-
-                                <i class="fas fa-cart-arrow-down fs-1 d-block mb-3"></i>
-
-                                Chưa có đơn hàng nào
-
+                            <td colspan="6" class="text-center py-5 text-muted">
+                                <i class="fas fa-cart-arrow-down fs-1 mb-3 d-block" style="opacity:.3;"></i>
+                                Chưa có đơn hàng nào trong hệ thống.
                             </td>
-
                         </tr>
                     }
-
                 </tbody>
-
             </table>
-
         </div>
 
+        <div class="saas-card-footer">
+            <small class="text-muted">Hiển thị tổng số @total đơn hàng</small>
+        </div>
     </div>
-
 </div>
 
+@await Html.PartialAsync("_SaasTableStyle")
+
 <style>
-
-    body {
-        background: #f8f9fc;
-    }
-
-    .order-card {
-        border-radius: 18px;
-        overflow: hidden;
+    /* Mini stat cards */
+    .mini-stat {
         background: white;
+        border: 1px solid #E5E7EB;
+        border-radius: 14px;
+        padding: 16px;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+        transition: transform .2s, box-shadow .2s;
+    }
+    .mini-stat:hover { transform: translateY(-3px); box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+    .mini-stat-icon {
+        width: 42px; height: 42px;
+        background: var(--cl); color: var(--c);
+        border-radius: 11px;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 1rem; flex-shrink: 0;
+    }
+    .mini-stat-val { font-size: 1.5rem; font-weight: 800; color: #111827; line-height: 1; }
+    .mini-stat-lbl { font-size: 0.75rem; color: #6B7280; font-weight: 500; }
+
+    /* Customer avatar small */
+    .cust-avatar-sm {
+        width: 32px; height: 32px; border-radius: 50%;
+        background: #EDE9FE; color: #7C3AED;
+        font-weight: 700; font-size: 0.82rem;
+        display: flex; align-items: center; justify-content: center;
+        flex-shrink: 0;
     }
 
-    .header-custom {
-        background: linear-gradient(135deg, #1cc88a, #169b6b);
-        padding: 1.5rem 2rem;
-    }
-
-    .custom-table thead th {
-        background: #f8f9fc;
-        color: #1cc88a;
-        text-transform: uppercase;
-        font-size: 13px;
-        border-top: none;
-    }
-
-    .status-badge {
-        padding: 0.5em 1em;
-        border-radius: 50px;
-        font-size: 12px;
-        font-weight: bold;
+    /* Order status badges */
+    .order-status {
         display: inline-block;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 0.78rem;
+        font-weight: 600;
     }
-
-    .status-success {
-        background: #e8fff3;
-        color: #1cc88a;
-    }
-
-    .status-pending {
-        background: #fff4e5;
-        color: #f6c23e;
-    }
-
-    .custom-table tbody tr {
-        transition: all 0.2s ease;
-    }
-
-        .custom-table tbody tr:hover {
-            background: #fcfffd;
-            transform: scale(1.002);
-        }
-
+    .badge-order-pending  { background: #FEF3C7; color: #D97706; }
+    .badge-order-shipping { background: #DBEAFE; color: #2563EB; }
+    .badge-order-done     { background: #DCFCE7; color: #16A34A; }
 </style>

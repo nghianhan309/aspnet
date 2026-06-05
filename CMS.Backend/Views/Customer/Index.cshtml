@@ -1,177 +1,112 @@
-﻿@model IEnumerable<CMS.Data.Entities.Customer>
+@model IEnumerable<CMS.Data.Entities.Customer>
 
 @{
-    ViewData["Title"] = "Danh sách khách hàng";
+    ViewData["Title"] = "Khách hàng";
 }
 
-<link rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-<div class="container mt-5">
-
-    <div class="customer-card shadow-lg border-0">
+<div class="container-fluid px-0">
+    <div class="saas-card">
 
         <!-- HEADER -->
-        <div class="header-custom">
-
-            <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
-
-                <div>
-
-                    <h2 class="text-white fw-bold mb-1">
-                        <i class="fas fa-users me-2"></i>
-                        Danh sách khách hàng
-                    </h2>
-
-                    <small class="text-white-50">
-                        Tổng cộng @(Model?.Count() ?? 0) khách hàng
-                    </small>
-
-                </div>
-
-                <button class="btn btn-light fw-bold btn-sm">
-
-                    <i class="fas fa-user-plus me-1"></i>
-                    Thêm khách hàng
-
-                </button>
-
+        <div class="saas-card-header">
+            <div>
+                <h3 class="mb-0 text-white fw-bold">
+                    <i class="fas fa-users me-2"></i>DANH SÁCH KHÁCH HÀNG
+                </h3>
+                <p class="text-white-50 small mb-0">Tổng cộng @(Model?.Count() ?? 0) khách hàng đã đăng ký</p>
             </div>
-
+            <a asp-action="Create" class="btn btn-add-new">
+                <i class="fas fa-user-plus me-1"></i> Thêm khách hàng
+            </a>
         </div>
 
         <!-- TABLE -->
-        <div class="table-responsive p-4">
-
-            <table class="table align-middle table-hover custom-table">
-
+        <div class="p-0">
+            <table class="table table-hover mb-0 saas-table align-middle">
                 <thead>
                     <tr>
-                        <th>ID</th>
-                        <th>Khách hàng</th>
-                        <th>Email</th>
-                        <th>Số điện thoại</th>
-                        <th>Địa chỉ</th>
+                        <th class="ps-4" style="width:6%">ID</th>
+                        <th style="width:25%">Khách hàng</th>
+                        <th style="width:25%">Email</th>
+                        <th style="width:15%">Số điện thoại</th>
+                        <th style="width:17%">Địa chỉ</th>
+                        <th class="text-end pe-4" style="width:12%">Thao tác</th>
                     </tr>
                 </thead>
-
                 <tbody>
-
                     @if (Model != null && Model.Any())
                     {
                         foreach (var item in Model)
                         {
-                            var avatar = !string.IsNullOrEmpty(item.FullName)
-                            ? item.FullName.Substring(0, 1).ToUpper()
-                            : "?";
+                            var initial = !string.IsNullOrEmpty(item.FullName)
+                                ? item.FullName.Trim().Substring(0, 1).ToUpper() : "?";
+                            var avatarColors = new[] {
+                                ("bg1","#7C3AED"),("bg2","#3B82F6"),("bg3","#22C55E"),
+                                ("bg4","#F59E0B"),("bg5","#EF4444"),("bg6","#06B6D4")
+                            };
+                            var color = avatarColors[item.Id % avatarColors.Length].Item2;
 
                             <tr>
-
-                                <td class="fw-bold text-muted">
-                                    #@item.Id
+                                <td class="ps-4">
+                                    <span class="badge bg-light text-dark border">#@item.Id</span>
                                 </td>
-
                                 <td>
-
-                                    <div class="d-flex align-items-center">
-
-                                        <div class="avatar-circle me-3">
-                                            @avatar
+                                    <div class="d-flex align-items-center gap-2">
+                                        <div class="cust-avatar" style="background:@color;">
+                                            @initial
                                         </div>
-
-                                        <span class="fw-semibold">
-                                            @item.FullName
-                                        </span>
-
+                                        <div>
+                                            <div class="fw-bold text-dark">@item.FullName</div>
+                                        </div>
                                     </div>
-
                                 </td>
-
-                                <td>
-                                    @item.Email
+                                <td class="text-muted">@item.Email</td>
+                                <td class="text-muted">@(item.Phone ?? "—")</td>
+                                <td class="text-muted text-truncate" style="max-width:160px;">
+                                    @(item.Address ?? "—")
                                 </td>
-
-                                <td>
-                                    @item.Phone
+                                <td class="text-end pe-4">
+                                    <div class="btn-group">
+                                        <a asp-action="Edit" asp-route-id="@item.Id"
+                                           class="btn btn-outline-warning btn-sm border-0 mx-1" title="Sửa">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <a asp-action="Delete" asp-route-id="@item.Id"
+                                           class="btn btn-outline-danger btn-sm border-0 mx-1" title="Xóa">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </a>
+                                    </div>
                                 </td>
-
-                                <td>
-                                    @item.Address
-                                </td>
-
                             </tr>
                         }
                     }
                     else
                     {
                         <tr>
-
-                            <td colspan="5"
-                                class="text-center py-5 text-muted">
-
-                                <i class="fas fa-user-slash fs-1 d-block mb-3"></i>
-
-                                Chưa có khách hàng nào
-
+                            <td colspan="6" class="text-center py-5 text-muted">
+                                <i class="fas fa-user-slash fs-1 mb-3 d-block" style="opacity:.3;"></i>
+                                Chưa có khách hàng nào trong hệ thống.
                             </td>
-
                         </tr>
                     }
-
                 </tbody>
-
             </table>
-
         </div>
 
+        <div class="saas-card-footer">
+            <small class="text-muted">Hiển thị tổng số @(Model?.Count() ?? 0) khách hàng</small>
+        </div>
     </div>
-
 </div>
 
+@await Html.PartialAsync("_SaasTableStyle")
+
 <style>
-
-    body {
-        background: #f8f9fc;
+    .cust-avatar {
+        width: 36px; height: 36px; border-radius: 50%;
+        color: #fff; font-weight: 700; font-size: 0.9rem;
+        display: flex; align-items: center; justify-content: center;
+        flex-shrink: 0;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.15);
     }
-
-    .customer-card {
-        border-radius: 18px;
-        overflow: hidden;
-        background: white;
-    }
-
-    .header-custom {
-        background: linear-gradient(135deg, #4e73df, #224abe);
-        padding: 1.5rem 2rem;
-    }
-
-    .custom-table thead th {
-        background: #f8f9fc;
-        color: #4e73df;
-        text-transform: uppercase;
-        font-size: 13px;
-        border-top: none;
-    }
-
-    .avatar-circle {
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        background: #eaecf4;
-        color: #4e73df;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-weight: bold;
-    }
-
-    .custom-table tbody tr {
-        transition: all 0.2s ease;
-    }
-
-        .custom-table tbody tr:hover {
-            background: #fcfdff;
-            transform: scale(1.002);
-        }
-
 </style>

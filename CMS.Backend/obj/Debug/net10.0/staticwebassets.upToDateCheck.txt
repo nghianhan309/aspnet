@@ -60,6 +60,9 @@ C:\Users\Admin\Downloads\asp-net-buoi-2\asp-net-main\asp-net-main\CMS.Backend\ww
 wwwroot\css\site.css
 wwwroot\favicon.ico
 wwwroot\images\1.jpeg
+wwwroot\images\2.jpg
+wwwroot\images\images.jpg
+wwwroot\images\ysl.png
 wwwroot\js\site.js
 wwwroot\lib\bootstrap\LICENSE
 wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css
@@ -118,3 +121,7 @@ wwwroot\lib\jquery\LICENSE.txt
 wwwroot\lib\jquery\dist\jquery.js
 wwwroot\lib\jquery\dist\jquery.min.js
 wwwroot\lib\jquery\dist\jquery.min.map
+wwwroot\uploads\products\41828cb0-47e5-4a5b-8063-b0c8b58ab569_2.jpg
+wwwroot\uploads\products\958365bf-5b77-4be3-bf08-8fa0bcab6f4a_1.jpeg
+wwwroot\uploads\products\fc757e0c-5281-41d0-97a4-60ead0f2025b_ysl.png
+wwwroot\uploads\products\ff093acf-c70c-41b1-ac66-8e5a1ea55cf7_images.jpg
