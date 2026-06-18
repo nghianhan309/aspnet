@@ -2,7 +2,71 @@
 
 @{
     ViewData["Title"] = "Quản lý Sản phẩm";
+
+    // Tính toán thống kê
+    int total = Model?.Count() ?? 0;
+    int countNam = Model?.Count(p => p.CategoryProduct != null && p.CategoryProduct.Name.ToLower().Contains("nam")) ?? 0;
+    int countNu = Model?.Count(p => p.CategoryProduct != null && p.CategoryProduct.Name.ToLower().Contains("nữ")) ?? 0;
 }
+
+<!-- STAT MINI CARDS -->
+<div class="row g-3 mb-4">
+    <div class="col-6 col-md-4">
+        <div class="mini-stat" style="--c:#3B82F6;--cl:#DBEAFE;">
+            <div class="mini-stat-icon"><i class="fas fa-box-open"></i></div>
+            <div>
+                <div class="mini-stat-val">@total</div>
+                <div class="mini-stat-lbl">Tổng sản phẩm</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-6 col-md-4">
+        <div class="mini-stat" style="--c:#06B6D4;--cl:#CFFAFE;">
+            <div class="mini-stat-icon"><i class="fas fa-mars"></i></div>
+            <div>
+                <div class="mini-stat-val">@countNam</div>
+                <div class="mini-stat-lbl">Nước hoa nam</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-6 col-md-4">
+        <div class="mini-stat" style="--c:#EC4899;--cl:#FCE7F3;">
+            <div class="mini-stat-icon"><i class="fas fa-venus"></i></div>
+            <div>
+                <div class="mini-stat-val">@countNu</div>
+                <div class="mini-stat-lbl">Nước hoa nữ</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- TOOLBAR CÔNG CỤ -->
+<div class="saas-card mb-4 p-3 bg-white border-0 shadow-sm rounded-3">
+    <div class="row g-2 align-items-center">
+        <div class="col-md-5">
+            <div class="input-group">
+                <span class="input-group-text bg-white border-end-0 text-muted"><i class="fas fa-search"></i></span>
+                <input type="text" id="searchInput" class="form-control border-start-0 ps-0 form-control-sm" placeholder="Tìm tên sản phẩm, danh mục...">
+            </div>
+        </div>
+        <div class="col-md-3">
+            <select id="categoryFilter" class="form-select form-select-sm text-muted">
+                <option value="">Tất cả danh mục</option>
+                <option value="nam">Nước hoa nam</option>
+                <option value="nữ">Nước hoa nữ</option>
+            </select>
+        </div>
+        <div class="col-md-4">
+            <select id="sortFilter" class="form-select form-select-sm text-muted">
+                <option value="">Sắp xếp theo...</option>
+                <option value="price-asc">Giá tăng dần</option>
+                <option value="price-desc">Giá giảm dần</option>
+                <option value="stock-asc">Tồn kho tăng dần</option>
+                <option value="stock-desc">Tồn kho giảm dần</option>
+            </select>
+        </div>
+    </div>
+</div>
 
 <div class="container-fluid px-0">
     <div class="saas-card">
@@ -22,7 +86,7 @@
 
         <!-- TABLE -->
         <div class="p-0">
-            <table class="table table-hover mb-0 saas-table align-middle">
+            <table class="table table-hover mb-0 saas-table align-middle" id="productTable">
                 <thead>
                     <tr>
                         <th class="ps-4" style="width:5%">ID</th>
@@ -39,15 +103,25 @@
                     {
                         foreach (var item in Model)
                         {
-                            <tr>
+                            var catName = item.CategoryProduct?.Name ?? "Chưa phân loại";
+                            var catBadge = "bg-secondary";
+                            if (catName.ToLower().Contains("nam")) { catBadge = "bg-info text-white"; }
+                            else if (catName.ToLower().Contains("nữ")) { catBadge = "bg-pink text-white"; }
+
+                            <tr class="product-row"
+                                data-name="@item.Name.ToLower()"
+                                data-category="@catName.ToLower()"
+                                data-price="@item.Price"
+                                data-stock="@item.StockQuantity">
+                                
                                 <td class="ps-4"><span class="badge bg-light text-dark border">#@item.Id</span></td>
                                 <td>
                                     <img src="@(string.IsNullOrEmpty(item.ImageUrl) ? "https://via.placeholder.com/80x80?text=No+Img" : Url.Content(item.ImageUrl.StartsWith("http") || item.ImageUrl.StartsWith("/") ? item.ImageUrl : "~/" + item.ImageUrl))"
-                                         class="rounded-3 shadow-sm" style="width:60px;height:60px;object-fit:cover;" alt="@item.Name" />
+                                         class="rounded-3 shadow-sm" style="width:50px;height:50px;object-fit:cover;" alt="@item.Name" />
                                 </td>
                                 <td><span class="fw-bold text-primary">@item.Name</span></td>
                                 <td>
-                                    <span class="badge bg-info text-dark">@(item.CategoryProduct?.Name ?? "Chưa phân loại")</span>
+                                    <span class="badge @catBadge">@catName</span>
                                 </td>
                                 <td><span class="fw-bold text-danger">@item.Price.ToString("N0") ₫</span></td>
                                 <td>
@@ -93,9 +167,119 @@
         </div>
 
         <div class="saas-card-footer">
-            <small class="text-muted">Hiển thị tổng số @(Model?.Count() ?? 0) sản phẩm</small>
+            <small class="text-muted" id="tableStatus">Hiển thị <span id="visibleCount">@total</span> / @total sản phẩm</small>
         </div>
     </div>
 </div>
 
 @await Html.PartialAsync("_SaasTableStyle")
+
+<style>
+    /* Mini stat cards */
+    .mini-stat {
+        background: white;
+        border: 1px solid #E5E7EB;
+        border-radius: 14px;
+        padding: 16px;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+        transition: transform .2s, box-shadow .2s;
+    }
+    .mini-stat:hover { transform: translateY(-3px); box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+    .mini-stat-icon {
+        width: 42px; height: 42px;
+        background: var(--cl); color: var(--c);
+        border-radius: 11px;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 1.2rem; flex-shrink: 0;
+    }
+    .mini-stat-val { font-size: 1.5rem; font-weight: 800; color: #111827; line-height: 1; }
+    .mini-stat-lbl { font-size: 0.75rem; color: #6B7280; font-weight: 500; }
+
+    /* Custom Pink Badge for Women's Perfume */
+    .bg-pink {
+        background-color: #EC4899;
+    }
+</style>
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const searchInput = document.getElementById("searchInput");
+            const categoryFilter = document.getElementById("categoryFilter");
+            const sortFilter = document.getElementById("sortFilter");
+            const tbody = document.querySelector("#productTable tbody");
+            const visibleCountSpan = document.getElementById("visibleCount");
+            
+            // Only process if rows exist
+            if (!tbody || tbody.querySelectorAll("tr.product-row").length === 0) return;
+            
+            const rows = Array.from(tbody.querySelectorAll("tr.product-row"));
+
+            function filterAndSort() {
+                const searchTerm = searchInput.value.toLowerCase().trim();
+                const catTerm = categoryFilter.value.toLowerCase();
+                const sortMode = sortFilter.value;
+                let visibleCount = 0;
+
+                // Filter logic
+                let visibleRows = rows.filter(row => {
+                    const name = row.getAttribute("data-name") || "";
+                    const category = row.getAttribute("data-category") || "";
+                    
+                    const matchSearch = name.includes(searchTerm) || category.includes(searchTerm);
+                    const matchCat = catTerm === "" || category.includes(catTerm);
+                    
+                    if (matchSearch && matchCat) {
+                        row.style.display = "";
+                        visibleCount++;
+                        return true;
+                    } else {
+                        row.style.display = "none";
+                        return false;
+                    }
+                });
+
+                // Update text
+                visibleCountSpan.textContent = visibleCount;
+
+                // Sort logic
+                if (sortMode) {
+                    visibleRows.sort((a, b) => {
+                        const priceA = parseFloat(a.getAttribute("data-price")) || 0;
+                        const priceB = parseFloat(b.getAttribute("data-price")) || 0;
+                        const stockA = parseInt(a.getAttribute("data-stock")) || 0;
+                        const stockB = parseInt(b.getAttribute("data-stock")) || 0;
+
+                        switch (sortMode) {
+                            case "price-asc": return priceA - priceB;
+                            case "price-desc": return priceB - priceA;
+                            case "stock-asc": return stockA - stockB;
+                            case "stock-desc": return stockB - stockA;
+                            default: return 0;
+                        }
+                    });
+
+                    // Re-append sorted visible rows (which automatically moves them to the end of the tbody)
+                    // We need to re-append ALL rows (both visible and hidden) to maintain DOM structure
+                    // But to sort only visible, it's easier to append visible ones first, then hidden ones
+                    visibleRows.forEach(row => tbody.appendChild(row));
+                    
+                    // Append hidden rows at the bottom
+                    rows.forEach(row => {
+                        if (row.style.display === "none") {
+                            tbody.appendChild(row);
+                        }
+                    });
+                }
+            }
+
+            // Attach events
+            searchInput.addEventListener("input", filterAndSort);
+            categoryFilter.addEventListener("change", filterAndSort);
+            sortFilter.addEventListener("change", filterAndSort);
+        });
+    </script>
+}

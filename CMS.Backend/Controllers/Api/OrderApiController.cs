@@ -1,6 +1,7 @@
 using CMS.Data;
 using CMS.Data.Entities;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace CMS.Backend.Controllers.Api
 {
@@ -15,10 +16,20 @@ namespace CMS.Backend.Controllers.Api
             _context = context;
         }
 
+        public class OrderItemRequest
+        {
+            public int ProductId { get; set; }
+            public int Quantity { get; set; }
+            public decimal UnitPrice { get; set; }
+        }
+
         public class OrderRequest
         {
             public int CustomerId { get; set; }
-            public string Notes { get; set; }
+            public string? Notes { get; set; }
+            public string? ShippingAddress { get; set; }
+            public string? PhoneNumber { get; set; }
+            public List<OrderItemRequest>? Items { get; set; }
         }
 
         // POST: api/order
@@ -31,18 +42,64 @@ namespace CMS.Backend.Controllers.Api
                 return BadRequest(new { success = false, message = "Khách hàng không tồn tại" });
             }
 
+            if (request.Items == null || !request.Items.Any())
+            {
+                return BadRequest(new { success = false, message = "Đơn hàng phải có ít nhất một sản phẩm" });
+            }
+
             var order = new Order
             {
                 CustomerId = request.CustomerId,
                 OrderDate = DateTime.Now,
                 Status = 0, // 0: Chờ duyệt
-                Notes = request.Notes
+                Notes = $"SDT: {request.PhoneNumber} | Địa chỉ: {request.ShippingAddress}" +
+                        (string.IsNullOrEmpty(request.Notes) ? "" : $" | Ghi chú: {request.Notes}")
             };
 
             _context.Orders.Add(order);
             await _context.SaveChangesAsync();
 
-            return Ok(new { success = true, message = "Đặt hàng thành công", orderId = order.Id });
+            // Thêm chi tiết đơn hàng
+            foreach (var item in request.Items)
+            {
+                var orderDetail = new OrderDetail
+                {
+                    OrderId = order.Id,
+                    ProductId = item.ProductId,
+                    Quantity = item.Quantity,
+                    UnitPrice = item.UnitPrice
+                };
+                _context.OrderDetails.Add(orderDetail);
+            }
+
+            await _context.SaveChangesAsync();
+
+            return Ok(new { success = true, message = "Đặt hàng thành công!", orderId = order.Id });
+        }
+
+        // GET: api/order (Lấy tất cả đơn hàng)
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            var orders = await _context.Orders
+                .Include(o => o.Customer)
+                .Include(o => o.OrderDetails)
+                .OrderByDescending(o => o.OrderDate)
+                .Select(o => new
+                {
+                    o.Id,
+                    o.OrderDate,
+                    o.Status,
+                    o.Notes,
+                    CustomerName = o.Customer != null ? o.Customer.FullName : "N/A",
+                    TotalAmount = o.OrderDetails != null
+                        ? o.OrderDetails.Sum(d => d.Quantity * d.UnitPrice)
+                        : 0,
+                    ItemCount = o.OrderDetails != null ? o.OrderDetails.Count : 0
+                })
+                .ToListAsync();
+
+            return Ok(new { success = true, data = orders });
         }
     }
 }

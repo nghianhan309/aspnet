@@ -61,7 +61,14 @@ wwwroot\css\site.css
 wwwroot\favicon.ico
 wwwroot\images\1.jpeg
 wwwroot\images\2.jpg
+wwwroot\images\DIOR.png
+wwwroot\images\GUCCI.jpg
+wwwroot\images\TOM FORD.png
+wwwroot\images\YVES SAINT LAURENT.jpg
+wwwroot\images\images (1).jpg
+wwwroot\images\images (2).jpg
 wwwroot\images\images.jpg
+wwwroot\images\nuoc hoa unisex.jpg
 wwwroot\images\ysl.png
 wwwroot\js\site.js
 wwwroot\lib\bootstrap\LICENSE
@@ -121,7 +128,9 @@ wwwroot\lib\jquery\LICENSE.txt
 wwwroot\lib\jquery\dist\jquery.js
 wwwroot\lib\jquery\dist\jquery.min.js
 wwwroot\lib\jquery\dist\jquery.min.map
+wwwroot\uploads\products\1.jpg
 wwwroot\uploads\products\41828cb0-47e5-4a5b-8063-b0c8b58ab569_2.jpg
 wwwroot\uploads\products\958365bf-5b77-4be3-bf08-8fa0bcab6f4a_1.jpeg
+wwwroot\uploads\products\d65b3605-e3f6-4de4-867e-1233205f9571_images (1).jpg
 wwwroot\uploads\products\fc757e0c-5281-41d0-97a4-60ead0f2025b_ysl.png
 wwwroot\uploads\products\ff093acf-c70c-41b1-ac66-8e5a1ea55cf7_images.jpg

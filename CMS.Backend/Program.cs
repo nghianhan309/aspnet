@@ -34,6 +34,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddMemoryCache(); // Đăng ký MemoryCache cho OTP
 
 // Cấu hình CORS mở mọi truy cập
 builder.Services.AddCors(options =>

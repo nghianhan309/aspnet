@@ -11,8 +11,24 @@
   },
   {
     "ContainingType": "CMS.Backend.Controllers.Api.CustomerApiController",
+    "Method": "ForgotPassword",
+    "RelativePath": "api/customer/forgot-password",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "CMS.Backend.Controllers.Api.CustomerApiController\u002BForgotPasswordRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CMS.Backend.Controllers.Api.CustomerApiController",
     "Method": "Login",
-    "RelativePath": "api/CustomerApi/login",
+    "RelativePath": "api/customer/login",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
@@ -28,7 +44,7 @@
   {
     "ContainingType": "CMS.Backend.Controllers.Api.CustomerApiController",
     "Method": "Register",
-    "RelativePath": "api/CustomerApi/register",
+    "RelativePath": "api/customer/register",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
@@ -36,6 +52,38 @@
       {
         "Name": "customer",
         "Type": "CMS.Data.Entities.Customer",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CMS.Backend.Controllers.Api.CustomerApiController",
+    "Method": "ResetPassword",
+    "RelativePath": "api/customer/reset-password",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "CMS.Backend.Controllers.Api.CustomerApiController\u002BResetPasswordRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CMS.Backend.Controllers.Api.CustomerApiController",
+    "Method": "VerifyOtp",
+    "RelativePath": "api/customer/verify-otp",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "CMS.Backend.Controllers.Api.CustomerApiController\u002BVerifyOtpRequest",
         "IsRequired": true
       }
     ],
@@ -55,6 +103,26 @@
         "IsRequired": true
       }
     ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CMS.Backend.Controllers.Api.OrderApiController",
+    "Method": "GetAll",
+    "RelativePath": "api/OrderApi",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CMS.Backend.Controllers.Api.PostApiController",
+    "Method": "GetLatestPosts",
+    "RelativePath": "api/PostApi/latest",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
     "ReturnTypes": []
   },
   {
