@@ -1,6 +1,6 @@
-﻿//Sinh viên : Phạm Văn Quỳnh Phúc
-//MSSV:2123110202
-//Lớp:CCQ2311F
+//Sinh viên : Nguyễn Nghĩa Nhân
+//MSSV:2123110146
+//Lớp:CCQ2311E
 //Ngày tạo: 15/05/2026
 //Mô tả: Quản lí Khách Hàng
 using System;
