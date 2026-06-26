@@ -1,7 +1,5 @@
 # 🌟 NEXUS FRAGRANCE - Luxury E-Commerce & CMS System
 
-![Nexus Fragrance Cover](https://via.placeholder.com/1200x400/111111/D4AF37?text=NEXUS+FRAGRANCE+E-COMMERCE+PLATFORM)
-
 **NEXUS FRAGRANCE** là một hệ thống Website Thương mại điện tử chuyên cung cấp các dòng nước hoa cao cấp, được tích hợp kèm Hệ quản trị nội dung (CMS) mạnh mẽ dành cho quản trị viên. Dự án được xây dựng với kiến trúc **Frontend (React)** và **Backend (ASP.NET Core MVC & Web API)** tách biệt nhưng tích hợp hoàn hảo.
 
 ---
