@@ -10,6 +10,7 @@ namespace CMS.Backend.Controllers.Api
 {
     [Route("api/customer")]
     [ApiController]
+    [Tags("Customer (Đăng ký / Đăng nhập)")]
     public class CustomerApiController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
@@ -29,6 +30,7 @@ namespace CMS.Backend.Controllers.Api
 
         // POST: api/customer/login
         [HttpPost("login")]
+        [ProducesResponseType(typeof(Customer), StatusCodes.Status200OK)]
         public async Task<IActionResult> Login([FromBody] LoginRequest request)
         {
             var customer = await _context.Customers
@@ -56,6 +58,7 @@ namespace CMS.Backend.Controllers.Api
 
         // POST: api/customer/register
         [HttpPost("register")]
+        [ProducesResponseType(typeof(Customer), StatusCodes.Status200OK)]
         public async Task<IActionResult> Register([FromBody] Customer customer)
         {
             if (await _context.Customers.AnyAsync(c => c.Email == customer.Email))
@@ -190,6 +193,69 @@ namespace CMS.Backend.Controllers.Api
             }
 
             return BadRequest(new { success = false, message = "Phiên đặt lại mật khẩu không hợp lệ. Vui lòng thử lại từ đầu." });
+        }
+
+        // GET: api/customer/{id}
+        [HttpGet("{id}")]
+        [ProducesResponseType(typeof(Customer), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetProfile(int id)
+        {
+            var customer = await _context.Customers.FindAsync(id);
+            if (customer == null)
+            {
+                return NotFound(new { success = false, message = "Không tìm thấy khách hàng" });
+            }
+
+            return Ok(new
+            {
+                success = true,
+                data = new
+                {
+                    customer.Id,
+                    customer.FullName,
+                    customer.Email,
+                    customer.Phone,
+                    customer.Address
+                }
+            });
+        }
+
+        public class UpdateProfileRequest
+        {
+            public string FullName { get; set; }
+            public string Phone { get; set; }
+            public string Address { get; set; }
+        }
+
+        // PUT: api/customer/{id}
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateProfile(int id, [FromBody] UpdateProfileRequest request)
+        {
+            var customer = await _context.Customers.FindAsync(id);
+            if (customer == null)
+            {
+                return NotFound(new { success = false, message = "Không tìm thấy khách hàng" });
+            }
+
+            customer.FullName = request.FullName;
+            customer.Phone = request.Phone;
+            customer.Address = request.Address;
+
+            await _context.SaveChangesAsync();
+
+            return Ok(new
+            {
+                success = true,
+                message = "Cập nhật thông tin thành công",
+                data = new
+                {
+                    customer.Id,
+                    customer.FullName,
+                    customer.Email,
+                    customer.Phone,
+                    customer.Address
+                }
+            });
         }
     }
 }

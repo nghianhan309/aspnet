@@ -1,0 +1,113 @@
+@model CMS.Data.Entities.Order
+
+@{
+    ViewData["Title"] = "Chi tiết đơn hàng";
+}
+
+<div class="container-fluid px-0">
+    <div class="saas-card mb-4">
+        <div class="saas-card-header">
+            <div>
+                <h3 class="mb-0 text-white fw-bold">
+                    <i class="fas fa-file-invoice me-2"></i>CHI TIẾT ĐƠN HÀNG #@Model.Id
+                </h3>
+            </div>
+            <a asp-action="Index" class="btn btn-light btn-sm text-primary fw-bold">
+                <i class="fas fa-arrow-left me-1"></i> Quay lại
+            </a>
+        </div>
+        <div class="p-4 bg-white">
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <div class="d-flex align-items-center justify-content-between mb-2">
+                        <h5 class="fw-bold text-dark mb-0"><i class="fas fa-user-circle me-2 text-primary"></i>Thông tin khách hàng</h5>
+                        <div>
+                            <a asp-controller="Order" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-sm btn-outline-warning rounded-pill px-3" title="Chỉnh sửa thông tin giao hàng">
+                                <i class="fas fa-edit me-1"></i> Sửa thông tin giao hàng
+                            </a>
+                        </div>
+                    </div>
+                    <p class="mb-1"><strong>Tên:</strong> @(Model.Customer?.FullName ?? "—")</p>
+                    <p class="mb-1"><strong>SĐT:</strong> @(Model.Customer?.Phone ?? "—")</p>
+                    <p class="mb-1"><strong>Địa chỉ:</strong> @(Model.Customer?.Address ?? "—")</p>
+                    <p class="mb-0"><strong>Ghi chú:</strong> @(string.IsNullOrEmpty(Model.Notes) ? "Không có" : Model.Notes)</p>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <h5 class="fw-bold text-dark"><i class="fas fa-info-circle me-2 text-primary"></i>Thông tin đơn hàng</h5>
+                    <p class="mb-1"><strong>Ngày đặt:</strong> @Model.OrderDate.ToString("dd/MM/yyyy HH:mm")</p>
+                    <p class="mb-1">
+                        <strong>Trạng thái:</strong>
+                        @if (Model.Status == 0)
+                        {
+                            <span class="badge bg-warning text-dark">Chờ duyệt</span>
+                        }
+                        else if (Model.Status == 1)
+                        {
+                            <span class="badge bg-primary">Đang giao</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-success">Hoàn thành</span>
+                        }
+                    </p>
+                </div>
+            </div>
+
+            <h5 class="fw-bold text-dark mt-4 mb-3"><i class="fas fa-box-open me-2 text-primary"></i>Danh sách sản phẩm</h5>
+            @if (Model.OrderDetails != null && Model.OrderDetails.Any())
+            {
+                <table class="table table-bordered align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Sản phẩm</th>
+                            <th class="text-center">Số lượng</th>
+                            <th class="text-end">Đơn giá</th>
+                            <th class="text-end">Thành tiền</th>
+                            <th class="text-center" style="width: 80px;">Xóa</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var detail in Model.OrderDetails)
+                        {
+                            <tr>
+                                <td>
+                                    <div class="d-flex align-items-center gap-2">
+                                        @if (!string.IsNullOrEmpty(detail.Product?.ImageUrl))
+                                        {
+                                            <img src="@detail.Product.ImageUrl" alt="" style="width:40px;height:40px;object-fit:cover;border-radius:4px;" />
+                                        }
+                                        <span>@(detail.Product?.Name ?? "Sản phẩm không tồn tại")</span>
+                                    </div>
+                                </td>
+                                <td class="text-center">x@(detail.Quantity)</td>
+                                <td class="text-end">@detail.UnitPrice.ToString("N0") đ</td>
+                                <td class="text-end fw-bold text-success">@((detail.Quantity * detail.UnitPrice).ToString("N0")) đ</td>
+                                <td class="text-center">
+                                    <form asp-action="DeleteDetail" asp-route-id="@detail.Id" method="post" style="display:inline;" onsubmit="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này khỏi đơn hàng?');">
+                                        <button type="submit" class="btn btn-sm btn-outline-danger border-0">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="3" class="text-end fw-bold">Tổng cộng:</td>
+                            <td colspan="2" class="text-end fw-bold text-danger fs-5">
+                                @Model.OrderDetails.Sum(d => d.Quantity * d.UnitPrice).ToString("N0") đ
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            }
+            else
+            {
+                <div class="alert alert-warning">Đơn hàng này không có chi tiết sản phẩm nào.</div>
+            }
+        </div>
+    </div>
+</div>
+
+@await Html.PartialAsync("_SaasTableStyle")

@@ -17,10 +17,15 @@ namespace CMS.Backend.Controllers
             _context = context;
         }
 
-        // Danh sách đơn hàng (kèm tên khách hàng)
+        // Danh sách đơn hàng (kèm tên khách hàng và chi tiết)
         public IActionResult Index()
         {
-            var orders = _context.Orders.Include(o => o.Customer).ToList();
+            var orders = _context.Orders
+                .Include(o => o.Customer)
+                .Include(o => o.OrderDetails)
+                    .ThenInclude(od => od.Product)
+                .OrderByDescending(o => o.OrderDate)
+                .ToList();
             return View(orders);
         }
 
@@ -102,6 +107,52 @@ namespace CMS.Backend.Controllers
                 _context.Orders.Remove(order);
             }
             _context.SaveChanges();
+            return RedirectToAction(nameof(Index));
+        }
+
+        // GET: Order/Details/5
+        public IActionResult Details(int? id)
+        {
+            if (id == null) return NotFound();
+
+            var order = _context.Orders
+                .Include(o => o.Customer)
+                .Include(o => o.OrderDetails)
+                    .ThenInclude(od => od.Product)
+                .FirstOrDefault(m => m.Id == id);
+                
+            if (order == null) return NotFound();
+
+            return View(order);
+        }
+
+        // POST: Order/DeleteDetail/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult DeleteDetail(int id)
+        {
+            var detail = _context.OrderDetails
+                .Include(od => od.Product)
+                .FirstOrDefault(d => d.Id == id);
+
+            if (detail != null)
+            {
+                // Hoàn lại số lượng tồn kho
+                if (detail.Product != null)
+                {
+                    detail.Product.StockQuantity += detail.Quantity;
+                }
+
+                _context.OrderDetails.Remove(detail);
+                _context.SaveChanges();
+            }
+
+            // Quay lại trang trước đó (Index hoặc Details)
+            string referer = Request.Headers["Referer"].ToString();
+            if (!string.IsNullOrEmpty(referer))
+            {
+                return Redirect(referer);
+            }
             return RedirectToAction(nameof(Index));
         }
     }

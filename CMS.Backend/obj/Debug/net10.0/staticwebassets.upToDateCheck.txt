@@ -60,15 +60,26 @@ C:\Users\Admin\Downloads\asp-net-buoi-2\asp-net-main\asp-net-main\CMS.Backend\ww
 wwwroot\css\site.css
 wwwroot\favicon.ico
 wwwroot\images\1.jpeg
+wwwroot\images\1.png
+wwwroot\images\10-nuoc-hoa-nu-cao-cap-voi-huong-thom-diu-duoc-phai-dep-me-man-9-1554793980-644-width550height414.jpg
 wwwroot\images\2.jpg
+wwwroot\images\Creed-Aventus-EDP-apa-niche.jpg
 wwwroot\images\DIOR.png
 wwwroot\images\GUCCI.jpg
+wwwroot\images\Le-Labo-Santal-33-EDP-apa-niche.png.webp
 wwwroot\images\TOM FORD.png
 wwwroot\images\YVES SAINT LAURENT.jpg
+wwwroot\images\dior-j_adore-eau-de-parfum-1_0e2466f4fcfa4adc93047e72afdfe77e_master_accc1727ab424dd290d9af4b736699f4.png
 wwwroot\images\images (1).jpg
 wwwroot\images\images (2).jpg
+wwwroot\images\images (3).jpg
+wwwroot\images\images (4).jpg
 wwwroot\images\images.jpg
 wwwroot\images\nuoc hoa unisex.jpg
+wwwroot\images\nuoc-hoa-maison-baccarat-rouge-540_6ae5c5329b834dd4a87ae05420fe602c_1024x1024.png
+wwwroot\images\nuoc-hoa-unisex-le-labo-santal-33-2.png
+wwwroot\images\nuoc-hoa6-15446764998601907178959.jpg
+wwwroot\images\wo-7426f449-365d-4433-bc30-cb3d46040c4b.webp
 wwwroot\images\ysl.png
 wwwroot\js\site.js
 wwwroot\lib\bootstrap\LICENSE
@@ -128,9 +139,19 @@ wwwroot\lib\jquery\LICENSE.txt
 wwwroot\lib\jquery\dist\jquery.js
 wwwroot\lib\jquery\dist\jquery.min.js
 wwwroot\lib\jquery\dist\jquery.min.map
+wwwroot\uploads\posts\18c1e417-5b8d-4a13-995a-f7ec5188d6c4_10-nuoc-hoa-nu-cao-cap-voi-huong-thom-diu-duoc-phai-dep-me-man-9-1554793980-644-width550height414.jpg
+wwwroot\uploads\posts\5c043fb6-65d6-47ad-9e68-8dff0bf1cfaa_nuoc hoa unisex.jpg
+wwwroot\uploads\posts\87d6ea7a-7462-4eea-ae4f-a7c67b8a5bca_nuoc-hoa6-15446764998601907178959.jpg
+wwwroot\uploads\posts\b43b578e-cce6-48b6-a43c-70dd60256e3d_1.png
+wwwroot\uploads\posts\f7efc7a6-7714-4c13-af84-0dfad247c2eb_DIOR.png
 wwwroot\uploads\products\1.jpg
+wwwroot\uploads\products\2b0e9d71-5094-4245-b50d-5ef9786e4252_nuoc-hoa-maison-baccarat-rouge-540_6ae5c5329b834dd4a87ae05420fe602c_1024x1024.png
+wwwroot\uploads\products\2d871ba9-9c10-44a6-947b-db54716f83f0_images (4).jpg
+wwwroot\uploads\products\2eb729f4-18f4-4255-86c5-5e75f07eb9fd_Creed-Aventus-EDP-apa-niche.jpg
 wwwroot\uploads\products\41828cb0-47e5-4a5b-8063-b0c8b58ab569_2.jpg
 wwwroot\uploads\products\958365bf-5b77-4be3-bf08-8fa0bcab6f4a_1.jpeg
+wwwroot\uploads\products\9ae3bc5a-6cbb-48d6-a2ca-600cfe8524d5_nuoc-hoa-unisex-le-labo-santal-33-2.png
 wwwroot\uploads\products\d65b3605-e3f6-4de4-867e-1233205f9571_images (1).jpg
+wwwroot\uploads\products\fac6c725-7f71-4bb4-ae57-1d9e6e012cb6_dior-j_adore-eau-de-parfum-1_0e2466f4fcfa4adc93047e72afdfe77e_master_accc1727ab424dd290d9af4b736699f4.png
 wwwroot\uploads\products\fc757e0c-5281-41d0-97a4-60ead0f2025b_ysl.png
 wwwroot\uploads\products\ff093acf-c70c-41b1-ac66-8e5a1ea55cf7_images.jpg

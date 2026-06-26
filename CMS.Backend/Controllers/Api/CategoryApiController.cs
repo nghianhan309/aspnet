@@ -1,4 +1,5 @@
 using CMS.Data;
+using CMS.Data.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,6 +18,7 @@ namespace CMS.Backend.Controllers.Api
 
         // GET: api/category
         [HttpGet]
+        [ProducesResponseType(typeof(List<CategoryProduct>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAll()
         {
             var categories = await _context.CategoriesProducts

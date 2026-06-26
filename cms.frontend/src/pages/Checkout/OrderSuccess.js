@@ -23,11 +23,11 @@ const OrderSuccess = () => {
                 <p style={{ color: 'var(--text-muted)', marginBottom: '40px', maxWidth: '500px', margin: '0 auto 40px' }}>
                     Cảm ơn bạn đã tin tưởng NEXUS FRAGRANCE. Chúng tôi sẽ liên hệ xác nhận đơn hàng trong thời gian sớm nhất.
                 </p>
-                <div style={{ display: 'flex', gap: '20px', justifyContent: 'center' }}>
+                <div style={{ display: 'flex', gap: '20px', justifyContent: 'center', alignItems: 'center' }}>
                     <Link to="/products" className="btn-primary" style={{ display: 'inline-flex' }}>
                         Tiếp tục mua sắm
                     </Link>
-                    <Link to="/" className="btn-outline" style={{ display: 'inline-flex' }}>
+                    <Link to="/" className="btn-outline-dark" style={{ display: 'inline-flex' }}>
                         Về trang chủ
                     </Link>
                 </div>

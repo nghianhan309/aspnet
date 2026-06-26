@@ -166,8 +166,28 @@
             </table>
         </div>
 
-        <div class="saas-card-footer">
-            <small class="text-muted" id="tableStatus">Hiển thị <span id="visibleCount">@total</span> / @total sản phẩm</small>
+        <div class="saas-card-footer d-flex justify-content-between align-items-center">
+            <small class="text-muted" id="tableStatus">Trang @ViewBag.CurrentPage / @ViewBag.TotalPages</small>
+            
+            @if (ViewBag.TotalPages > 1)
+            {
+                <nav>
+                    <ul class="pagination pagination-sm mb-0">
+                        <li class="page-item @(ViewBag.CurrentPage == 1 ? "disabled" : "")">
+                            <a class="page-link" asp-action="Index" asp-route-page="@(ViewBag.CurrentPage - 1)">Trước</a>
+                        </li>
+                        @for (int i = 1; i <= ViewBag.TotalPages; i++)
+                        {
+                            <li class="page-item @(i == ViewBag.CurrentPage ? "active" : "")">
+                                <a class="page-link" asp-action="Index" asp-route-page="@i">@i</a>
+                            </li>
+                        }
+                        <li class="page-item @(ViewBag.CurrentPage == ViewBag.TotalPages ? "disabled" : "")">
+                            <a class="page-link" asp-action="Index" asp-route-page="@(ViewBag.CurrentPage + 1)">Sau</a>
+                        </li>
+                    </ul>
+                </nav>
+            }
         </div>
     </div>
 </div>

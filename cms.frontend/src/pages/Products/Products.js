@@ -15,13 +15,24 @@ const Products = () => {
     const [selectedCategory, setSelectedCategory] = useState('');
     const [priceRange, setPriceRange] = useState('all');
     const [isLoading, setIsLoading] = useState(true);
+    
+    // Pagination states
+    const [currentPage, setCurrentPage] = useState(1);
+    const productsPerPage = 9;
 
     // Map URL param to category name
     useEffect(() => {
-        if (categoryParam === 'male') setSelectedCategory('Nước hoa nam');
-        else if (categoryParam === 'female') setSelectedCategory('Nước hoa nữ');
-        else if (categoryParam === 'unisex') setSelectedCategory('Nước hoa Unisex');
-        else setSelectedCategory('');
+        if (!categoryParam) {
+            setSelectedCategory('');
+        } else if (categoryParam === 'male') {
+            setSelectedCategory('Nước hoa nam');
+        } else if (categoryParam === 'female') {
+            setSelectedCategory('Nước hoa nữ');
+        } else if (categoryParam === 'unisex') {
+            setSelectedCategory('Nước Hoa Unisex');
+        } else {
+            setSelectedCategory(categoryParam); // Dùng tên danh mục động
+        }
     }, [categoryParam]);
 
     // Fetch data
@@ -64,7 +75,19 @@ const Products = () => {
         }
 
         setFilteredProducts(result);
+        setCurrentPage(1); // Reset to page 1 when filter changes
     }, [selectedCategory, priceRange, allProducts]);
+
+    // Pagination logic
+    const indexOfLastProduct = currentPage * productsPerPage;
+    const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+    const currentProducts = filteredProducts.slice(indexOfFirstProduct, indexOfLastProduct);
+    const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
+
+    const paginate = (pageNumber) => {
+        setCurrentPage(pageNumber);
+        window.scrollTo({ top: 400, behavior: 'smooth' }); // Scroll back to top of list
+    };
 
     return (
         <div className="page-wrapper">
@@ -107,7 +130,44 @@ const Products = () => {
                                 </div>
                             </div>
                             
-                            <ProductList products={filteredProducts} isLoading={isLoading} />
+                            <ProductList products={currentProducts} isLoading={isLoading} />
+
+                            {/* Pagination UI */}
+                            {!isLoading && totalPages > 1 && (
+                                <div className="pagination-container" style={{ display: 'flex', justifyContent: 'center', marginTop: '50px', gap: '10px' }}>
+                                    <button 
+                                        onClick={() => paginate(currentPage - 1)} 
+                                        disabled={currentPage === 1}
+                                        style={{ padding: '8px 16px', border: '1px solid #ddd', background: currentPage === 1 ? '#f5f5f5' : 'transparent', cursor: currentPage === 1 ? 'not-allowed' : 'pointer' }}
+                                    >
+                                        &laquo; Trước
+                                    </button>
+                                    
+                                    {[...Array(totalPages)].map((_, i) => (
+                                        <button 
+                                            key={i} 
+                                            onClick={() => paginate(i + 1)}
+                                            style={{ 
+                                                padding: '8px 16px', 
+                                                border: '1px solid #ddd', 
+                                                background: currentPage === i + 1 ? '#111' : 'transparent', 
+                                                color: currentPage === i + 1 ? '#fff' : '#333',
+                                                cursor: 'pointer' 
+                                            }}
+                                        >
+                                            {i + 1}
+                                        </button>
+                                    ))}
+
+                                    <button 
+                                        onClick={() => paginate(currentPage + 1)} 
+                                        disabled={currentPage === totalPages}
+                                        style={{ padding: '8px 16px', border: '1px solid #ddd', background: currentPage === totalPages ? '#f5f5f5' : 'transparent', cursor: currentPage === totalPages ? 'not-allowed' : 'pointer' }}
+                                    >
+                                        Sau &raquo;
+                                    </button>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </section>

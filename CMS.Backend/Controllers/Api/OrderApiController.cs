@@ -70,6 +70,16 @@ namespace CMS.Backend.Controllers.Api
                     UnitPrice = item.UnitPrice
                 };
                 _context.OrderDetails.Add(orderDetail);
+
+                // Trừ bớt số lượng sản phẩm tồn kho
+                var product = await _context.Products.FindAsync(item.ProductId);
+                if (product != null)
+                {
+                    product.StockQuantity -= item.Quantity;
+                    // Đảm bảo tồn kho không âm
+                    if (product.StockQuantity < 0) product.StockQuantity = 0;
+                    _context.Products.Update(product);
+                }
             }
 
             await _context.SaveChangesAsync();
@@ -79,6 +89,7 @@ namespace CMS.Backend.Controllers.Api
 
         // GET: api/order (Lấy tất cả đơn hàng)
         [HttpGet]
+        [ProducesResponseType(typeof(List<Order>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAll()
         {
             var orders = await _context.Orders
@@ -96,6 +107,39 @@ namespace CMS.Backend.Controllers.Api
                         ? o.OrderDetails.Sum(d => d.Quantity * d.UnitPrice)
                         : 0,
                     ItemCount = o.OrderDetails != null ? o.OrderDetails.Count : 0
+                })
+                .ToListAsync();
+
+            return Ok(new { success = true, data = orders });
+        }
+
+        // GET: api/order/customer/{customerId}
+        [HttpGet("customer/{customerId}")]
+        [ProducesResponseType(typeof(List<Order>), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetCustomerOrders(int customerId)
+        {
+            var orders = await _context.Orders
+                .Include(o => o.OrderDetails)
+                    .ThenInclude(od => od.Product)
+                .Where(o => o.CustomerId == customerId)
+                .OrderByDescending(o => o.OrderDate)
+                .Select(o => new
+                {
+                    o.Id,
+                    o.OrderDate,
+                    o.Status,
+                    o.Notes,
+                    TotalAmount = o.OrderDetails != null
+                        ? o.OrderDetails.Sum(d => d.Quantity * d.UnitPrice)
+                        : 0,
+                    Items = o.OrderDetails.Select(od => new
+                    {
+                        od.ProductId,
+                        ProductName = od.Product != null ? od.Product.Name : "N/A",
+                        ProductImage = od.Product != null ? od.Product.ImageUrl : null,
+                        od.Quantity,
+                        od.UnitPrice
+                    }).ToList()
                 })
                 .ToListAsync();
 

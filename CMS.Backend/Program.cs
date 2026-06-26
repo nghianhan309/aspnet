@@ -36,12 +36,12 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddMemoryCache(); // Đăng ký MemoryCache cho OTP
 
-// Cấu hình CORS mở mọi truy cập
+// Cấu hình CORS mở quyền cho ứng dụng ReactJS
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAll", policy =>
+    options.AddPolicy("AllowReactApp", policy =>
     {
-        policy.AllowAnyOrigin()
+        policy.WithOrigins("http://localhost:3000")
               .AllowAnyMethod()
               .AllowAnyHeader();
     });
@@ -106,7 +106,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 // Sử dụng policy CORS đã định nghĩa
-app.UseCors("AllowAll");
+app.UseCors("AllowReactApp");
 
 app.UseRouting();
 
@@ -114,6 +114,8 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
+// Đảm bảo định tuyến Middleware lai (API và MVC)
+app.MapControllers();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");

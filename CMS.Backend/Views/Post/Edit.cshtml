@@ -1,0 +1,114 @@
+@model CMS.Data.Entities.Post
+
+@{
+    ViewData["Title"] = "Sửa Bài viết";
+}
+
+<div class="container mt-5">
+    <div class="card shadow-sm border-0 rounded-3">
+        <div class="card-header py-3" style="background: linear-gradient(135deg, #1e3a5f, #1a2744); border-radius: 1rem 1rem 0 0; border-bottom: 1px solid rgba(56,189,248,0.2);">
+            <h4 class="mb-0" style="color: #fff;"><i class="bi bi-pencil-square me-2" style="color: #38bdf8;"></i>Cập Nhật Bài Viết</h4>
+        </div>
+        <div class="card-body p-4" style="background: rgba(15,23,42,0.95);">
+            <form asp-action="Edit" enctype="multipart/form-data">
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+                
+                <input type="hidden" asp-for="Id" />
+                <input type="hidden" asp-for="ImageUrl" />
+                <input type="hidden" asp-for="CreatedDate" />
+
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="mb-3">
+                            <label asp-for="Title" class="form-label fw-bold">Tiêu đề bài viết <span class="text-danger">*</span></label>
+                            <input asp-for="Title" class="form-control" placeholder="Nhập tiêu đề..." />
+                            <span asp-validation-for="Title" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Content" class="form-label fw-bold">Nội dung chi tiết</label>
+                            <textarea asp-for="Content" class="form-control" rows="10" placeholder="Nhập nội dung bài viết..."></textarea>
+                            <span asp-validation-for="Content" class="text-danger"></span>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-4">
+                        <div class="mb-3">
+                            <label asp-for="CategoryId" class="form-label fw-bold">Danh mục bài viết <span class="text-danger">*</span></label>
+                            <select asp-for="CategoryId" class="form-select" asp-items="ViewBag.CategoryId">
+                                <option value="">-- Chọn danh mục --</option>
+                            </select>
+                            <span asp-validation-for="CategoryId" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Ảnh đại diện</label>
+                            <div class="mb-2">
+                                <img src="@(string.IsNullOrEmpty(Model.ImageUrl) ? "https://via.placeholder.com/150" : Model.ImageUrl)" 
+                                     alt="Current Image" class="img-thumbnail" style="max-height: 150px; width: 100%; object-fit: cover;" />
+                            </div>
+                            <input type="file" name="imageFile" class="form-control" accept="image/*" />
+                            <small class="text-muted d-block mt-1">Chỉ tải lên nếu bạn muốn thay đổi ảnh hiện tại.</small>
+                        </div>
+                    </div>
+                </div>
+
+                <hr class="my-4" />
+
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-warning px-4 text-dark fw-bold">
+                        <i class="bi bi-save me-1"></i> Cập nhật
+                    </button>
+                    <a asp-action="Index" class="btn btn-secondary px-4">
+                        <i class="bi bi-arrow-left me-1"></i> Quay lại
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <!-- Thêm CKEditor CDN -->
+    <script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            ClassicEditor
+                .create(document.querySelector('#Content'), {
+                    toolbar: [ 'heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote', '|', 'undo', 'redo' ]
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        });
+    </script>
+}
+
+<style>
+    .form-label { color: #94a3b8 !important; font-size: 0.82rem; letter-spacing: 0.05rem; text-transform: uppercase; font-weight: 600; }
+    .form-control, .form-select {
+        background: rgba(255, 255, 255, 0.05) !important;
+        border: 1px solid rgba(255, 255, 255, 0.12) !important;
+        color: #f1f5f9 !important;
+        border-radius: 8px;
+    }
+    .form-control::placeholder { color: rgba(148, 163, 184, 0.6) !important; }
+    .form-control:focus, .form-select:focus {
+        background: rgba(56, 189, 248, 0.08) !important;
+        border-color: #38bdf8 !important;
+        box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15) !important;
+        color: #fff !important;
+    }
+    .form-select option { background: #1e293b; color: #f1f5f9; }
+    textarea.form-control { color: #f1f5f9 !important; }
+    .card { border: 1px solid rgba(255,255,255,0.08) !important; border-radius: 1rem !important; }
+    .text-danger { color: #f87171 !important; }
+    hr { border-color: rgba(255,255,255,0.08) !important; }
+
+    /* Fix CKEditor in Dark Mode */
+    .ck-editor__editable_inline {
+        min-height: 300px;
+        color: #333 !important; /* Text in editor should be visible */
+    }
+</style>
