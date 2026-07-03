@@ -48,6 +48,14 @@
                             <input asp-for="StockQuantity" class="form-control" type="number" min="0" placeholder="0" />
                             <span asp-validation-for="StockQuantity" class="text-danger"></span>
                         </div>
+                        
+                        <div class="mb-3 form-check mt-3">
+                            <input class="form-check-input" type="checkbox" asp-for="IsHot">
+                            <label class="form-check-label fw-bold" asp-for="IsHot" style="color: #f1f5f9; cursor: pointer;">
+                                Đánh dấu là Sản Phẩm Hot <i class="fas fa-fire text-danger ms-1"></i>
+                            </label>
+                            <small class="d-block text-muted" style="font-size: 0.75rem;">Sản phẩm sẽ được ưu tiên hiển thị ở mục Bán Chạy trên trang chủ.</small>
+                        </div>
 
                         <div class="mb-4">
                             <label class="form-label fw-bold">Ảnh sản phẩm</label>

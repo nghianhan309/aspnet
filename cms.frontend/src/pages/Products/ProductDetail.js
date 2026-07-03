@@ -4,6 +4,7 @@ import Header from '../../components/layout/Header';
 import Footer from '../../components/layout/Footer';
 import api from '../../services/api';
 import { useCart } from '../../context/CartContext';
+import Swal from 'sweetalert2';
 
 const ProductDetail = () => {
     const { id } = useParams();
@@ -32,7 +33,8 @@ const ProductDetail = () => {
     const getImageUrl = (url) => {
         if (!url) return 'https://via.placeholder.com/600x800?text=No+Image';
         if (url.startsWith('http')) return url;
-        return `https://localhost:7226${url}`;
+        const baseUrl = process.env.REACT_APP_IMAGE_BASE_URL || 'https://localhost:7226';
+        return `${baseUrl}${url}`;
     };
 
     const increaseQuantity = () => {
@@ -48,8 +50,31 @@ const ProductDetail = () => {
     };
 
     const handleAddToCart = () => {
+        const cartItems = JSON.parse(localStorage.getItem('cartItems') || '[]');
+        const existingItem = cartItems.find(i => i.id === product.id);
+        const currentQtyInCart = existingItem ? existingItem.quantity : 0;
+        
+        if (currentQtyInCart + quantity > product.stockQuantity) {
+            Swal.fire({
+                title: 'Rất tiếc!',
+                text: "Số lượng sản phẩm trong kho không đủ!",
+                icon: 'warning',
+                confirmButtonColor: '#e74c3c'
+            });
+            return;
+        }
+
         addToCart(product, quantity);
-        alert(`Đã thêm ${quantity} sản phẩm ${product.name} vào giỏ hàng!`);
+        Swal.fire({
+            title: 'Thành công!',
+            text: `Đã thêm ${quantity} sản phẩm ${product.name} vào giỏ hàng!`,
+            icon: 'success',
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true
+        });
     };
 
     if (isLoading) {

@@ -1,0 +1,33 @@
+@model CMS.Data.Entities.Banner
+
+@{
+    ViewData["Title"] = "Xóa Banner";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card shadow-sm border-0 rounded-4 max-w-2xl mx-auto" style="max-width: 600px;">
+    <div class="card-body p-5 text-center">
+        <div class="mb-4">
+            <div class="d-inline-flex align-items-center justify-content-center bg-danger bg-opacity-10 text-danger rounded-circle" style="width: 80px; height: 80px;">
+                <i class="fas fa-exclamation-triangle fa-2x"></i>
+            </div>
+        </div>
+        <h4 class="fw-bold mb-3">Xóa Banner này?</h4>
+        <p class="text-muted mb-4">Bạn có chắc chắn muốn xóa banner <strong>"@Model.Title"</strong> không? Hành động này không thể hoàn tác.</p>
+        
+        @if (!string.IsNullOrEmpty(Model.ImageUrl))
+        {
+            <div class="mb-4">
+                <img src="@Model.ImageUrl" alt="Banner" class="img-thumbnail rounded" style="max-height: 120px;" />
+            </div>
+        }
+
+        <form asp-action="Delete">
+            <input type="hidden" asp-for="Id" />
+            <div class="d-flex justify-content-center gap-3">
+                <a asp-action="Index" class="btn btn-light rounded-3 px-4 border">Hủy bỏ</a>
+                <button type="submit" class="btn btn-danger rounded-3 px-4">Xác nhận xóa</button>
+            </div>
+        </form>
+    </div>
+</div>

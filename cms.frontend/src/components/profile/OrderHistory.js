@@ -76,9 +76,12 @@ const OrderHistory = ({ customerId }) => {
                                     <span className="order-id">Đơn hàng #{order.id}</span>
                                     <span className="order-date">{formatDate(order.orderDate)}</span>
                                 </div>
-                                <div className="order-price-status">
+                                <div className="order-price-status" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                                     <span className="order-price">{order.totalAmount.toLocaleString('vi-VN')} đ</span>
                                     <span className={`status-badge ${statusInfo.cls}`}>{statusInfo.text}</span>
+                                    <span style={{ color: 'var(--primary)', fontSize: '0.85rem', fontWeight: '600', textDecoration: 'underline', marginLeft: '5px' }}>
+                                        {isExpanded ? 'Thu gọn' : 'Xem chi tiết'}
+                                    </span>
                                 </div>
                             </div>
                             

@@ -16,17 +16,20 @@ const CategoryShowcase = () => {
         <section className="category-showcase container section">
             <h2 className="section-title">Danh Mục Nổi Bật</h2>
             <p className="section-subtitle">Bộ sưu tập nước hoa được yêu thích nhất</p>
-            <div className="category-grid">
+            <div className="category-grid" style={{ display: 'flex', justifyContent: 'center', gap: '40px', flexWrap: 'wrap' }}>
                 {categories.map((cat, index) => (
-                    <Link key={cat.id || index} to={cat.link} className="category-card luxury-card" style={{ textDecoration: 'none' }}>
+                    <Link key={cat.id || index} to={cat.link} className="category-card luxury-card" style={{ textDecoration: 'none', borderRadius: '50%', overflow: 'hidden', width: '250px', height: '250px', display: 'block', position: 'relative', boxShadow: '0 10px 30px rgba(0,0,0,0.1)', transition: 'transform 0.3s ease' }}
+                          onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
+                          onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
+                    >
                         <img
                             src={cat.image}
                             alt={cat.name}
                             className="category-image"
+                            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                         />
-                        <div className="category-overlay">
-                            <h3 className="category-name">{cat.name}</h3>
-                            <span className="btn-outline discover-btn">Khám Phá</span>
+                        <div className="category-overlay" style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.4)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', color: '#fff' }}>
+                            <h3 className="category-name" style={{ fontSize: '1.5rem', margin: 0, textShadow: '0 2px 4px rgba(0,0,0,0.5)' }}>{cat.name}</h3>
                         </div>
                     </Link>
                 ))}

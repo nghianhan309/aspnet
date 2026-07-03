@@ -163,5 +163,92 @@ namespace CMS.Backend.Controllers.Api
 
             return Ok(new { success = true, data = products });
         }
+
+        // GET: api/ProductApi/bestselling
+        [HttpGet("bestselling")]
+        [ProducesResponseType(typeof(List<Product>), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetBestSellingProducts([FromQuery] int count = 3)
+        {
+            // Bước 1: Lấy các sản phẩm được đánh dấu IsHot
+            var hotProducts = await _context.Products
+                .Include(p => p.CategoryProduct)
+                .Where(p => p.IsHot)
+                .OrderByDescending(p => p.Id)
+                .Select(p => new
+                {
+                    p.Id,
+                    p.Name,
+                    p.Price,
+                    p.ImageUrl,
+                    CategoryName = p.CategoryProduct != null ? p.CategoryProduct.Name : null
+                })
+                .ToListAsync();
+
+            var orderedProducts = hotProducts.Take(count).ToList();
+
+            // Nếu đã đủ sản phẩm Hot thì trả về luôn
+            if (orderedProducts.Count >= count)
+            {
+                return Ok(new { success = true, data = orderedProducts });
+            }
+
+            var remainingCount = count - orderedProducts.Count;
+            var existingIds = orderedProducts.Select(p => p.Id).ToList();
+
+            // Bước 2: Lấy thêm sản phẩm bán chạy nhất
+            var bestSellingIds = await _context.OrderDetails
+                .GroupBy(od => od.ProductId)
+                .Select(g => new { ProductId = g.Key, TotalSold = g.Sum(od => od.Quantity) })
+                .OrderByDescending(x => x.TotalSold)
+                .Select(x => x.ProductId)
+                .ToListAsync();
+
+            var bestSellingProducts = await _context.Products
+                .Include(p => p.CategoryProduct)
+                .Where(p => bestSellingIds.Contains(p.Id) && !existingIds.Contains(p.Id))
+                .ToListAsync();
+            
+            var orderedBestSelling = bestSellingIds
+                .Select(id => bestSellingProducts.FirstOrDefault(p => p.Id == id))
+                .Where(p => p != null)
+                .Select(p => new
+                {
+                    p.Id,
+                    p.Name,
+                    p.Price,
+                    p.ImageUrl,
+                    CategoryName = p.CategoryProduct != null ? p.CategoryProduct.Name : null
+                })
+                .Take(remainingCount)
+                .ToList();
+
+            orderedProducts.AddRange(orderedBestSelling);
+
+            // Bước 3: Nếu vẫn chưa đủ, lấy thêm sản phẩm mới nhất
+            if (orderedProducts.Count < count)
+            {
+                remainingCount = count - orderedProducts.Count;
+                existingIds = orderedProducts.Select(p => p.Id).ToList();
+                
+                var moreProducts = await _context.Products
+                    .Include(p => p.CategoryProduct)
+                    .Where(p => !existingIds.Contains(p.Id))
+                    .OrderByDescending(p => p.Id)
+                    .Take(remainingCount)
+                    .Select(p => new
+                    {
+                        p.Id,
+                        p.Name,
+                        p.Price,
+                        p.ImageUrl,
+                        CategoryName = p.CategoryProduct != null ? p.CategoryProduct.Name : null
+                    })
+                    .ToListAsync();
+                    
+                orderedProducts.AddRange(moreProducts);
+            }
+
+            return Ok(new { success = true, data = orderedProducts });
+        }
     }
 }

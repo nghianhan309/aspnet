@@ -31,7 +31,8 @@ const PostDetail = () => {
     const getImageUrl = (url) => {
         if (!url) return 'https://images.unsplash.com/photo-1594035910387-fea47794261f?w=1200&q=80';
         if (url.startsWith('http')) return url;
-        return `https://localhost:7226${url}`;
+        const baseUrl = process.env.REACT_APP_IMAGE_BASE_URL || 'https://localhost:7226';
+        return `${baseUrl}${url}`;
     };
 
     if (isLoading) {

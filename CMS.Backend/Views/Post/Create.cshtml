@@ -67,7 +67,10 @@
         document.addEventListener("DOMContentLoaded", function() {
             ClassicEditor
                 .create(document.querySelector('#Content'), {
-                    toolbar: [ 'heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote', '|', 'undo', 'redo' ]
+                    toolbar: [ 'heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote', '|', 'imageUpload', 'undo', 'redo' ],
+                    ckfinder: {
+                        uploadUrl: '/Post/UploadImage'
+                    }
                 })
                 .catch(error => {
                     console.error(error);

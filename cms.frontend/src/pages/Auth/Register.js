@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import api from '../../services/api';
+import Swal from 'sweetalert2';
 import MainLayout from '../../components/layout/MainLayout';
 import { Mail, Lock, User, ArrowRight } from 'lucide-react';
 
@@ -32,7 +33,12 @@ const Register = () => {
             });
 
             if (response.data.success) {
-                alert("Đăng ký thành công! Vui lòng đăng nhập.");
+                Swal.fire({
+                    title: 'Thành công!',
+                    text: 'Đăng ký thành công! Vui lòng đăng nhập.',
+                    icon: 'success',
+                    confirmButtonColor: '#10B981'
+                });
                 navigate('/login');
             } else {
                 setError(response.data.message || "Đăng ký thất bại.");

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import api from '../../services/api';
 import MainLayout from '../../components/layout/MainLayout';
+import Swal from 'sweetalert2';
 import { Mail, KeyRound, Lock, ArrowRight, ArrowLeft } from 'lucide-react';
 
 const ForgotPassword = () => {
@@ -80,7 +81,12 @@ const ForgotPassword = () => {
             });
             
             if (res.data.success) {
-                alert("Đặt lại mật khẩu thành công! Vui lòng đăng nhập bằng mật khẩu mới.");
+                Swal.fire({
+                    title: 'Thành công!',
+                    text: 'Đặt lại mật khẩu thành công! Vui lòng đăng nhập bằng mật khẩu mới.',
+                    icon: 'success',
+                    confirmButtonColor: '#10B981'
+                });
                 navigate('/login');
             } else {
                 setError(res.data.message);

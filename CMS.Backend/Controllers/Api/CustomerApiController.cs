@@ -34,9 +34,36 @@ namespace CMS.Backend.Controllers.Api
         public async Task<IActionResult> Login([FromBody] LoginRequest request)
         {
             var customer = await _context.Customers
-                .FirstOrDefaultAsync(c => c.Email == request.Email && c.Password == request.Password);
+                .FirstOrDefaultAsync(c => c.Email == request.Email);
 
             if (customer == null)
+            {
+                return Unauthorized(new { success = false, message = "Email hoặc mật khẩu không đúng" });
+            }
+
+            bool isPasswordValid = false;
+
+            if (!string.IsNullOrEmpty(customer.Password) && customer.Password.StartsWith("$2"))
+            {
+                try 
+                {
+                    isPasswordValid = BCrypt.Net.BCrypt.Verify(request.Password, customer.Password);
+                }
+                catch { }
+            }
+            else
+            {
+                // Fallback cho mật khẩu thô cũ chưa được mã hóa
+                if (customer.Password == request.Password)
+                {
+                    isPasswordValid = true;
+                    // Tự động nâng cấp: Mã hóa lại mật khẩu và lưu vào database
+                    customer.Password = BCrypt.Net.BCrypt.HashPassword(request.Password);
+                    await _context.SaveChangesAsync();
+                }
+            }
+
+            if (!isPasswordValid)
             {
                 return Unauthorized(new { success = false, message = "Email hoặc mật khẩu không đúng" });
             }
@@ -66,6 +93,7 @@ namespace CMS.Backend.Controllers.Api
                 return BadRequest(new { success = false, message = "Email này đã được sử dụng" });
             }
 
+            customer.Password = BCrypt.Net.BCrypt.HashPassword(customer.Password);
             _context.Customers.Add(customer);
             await _context.SaveChangesAsync();
 
@@ -181,7 +209,7 @@ namespace CMS.Backend.Controllers.Api
                     var customer = await _context.Customers.FirstOrDefaultAsync(c => c.Email == request.Email);
                     if (customer != null)
                     {
-                        customer.Password = request.NewPassword;
+                        customer.Password = BCrypt.Net.BCrypt.HashPassword(request.NewPassword);
                         await _context.SaveChangesAsync();
                         
                         // Xóa cache OTP để không dùng lại được

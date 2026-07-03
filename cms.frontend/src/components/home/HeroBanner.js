@@ -3,29 +3,30 @@ import { Link } from 'react-router-dom';
 import api from '../../services/api';
 
 const HeroBanner = () => {
-    const [featuredPosts, setFeaturedPosts] = useState([]);
+    const [banners, setBanners] = useState([]);
     const [currentIndex, setCurrentIndex] = useState(0);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        api.get('/api/postapi')
+        api.get('/api/bannerapi')
             .then(res => {
-                if (res.data && res.data.success && res.data.data.length > 0) {
-                    // Lấy tối đa 3 bài viết mới nhất
-                    setFeaturedPosts(res.data.data.slice(0, 3));
+                if (res.data && res.data.length > 0) {
+                    setBanners(res.data);
                 }
             })
-            .catch(err => console.error("Error fetching hero posts:", err));
+            .catch(err => console.error("Error fetching banners:", err))
+            .finally(() => setIsLoading(false));
     }, []);
 
     useEffect(() => {
-        if (featuredPosts.length <= 1) return;
+        if (banners.length <= 1) return;
         
         const interval = setInterval(() => {
-            setCurrentIndex((prevIndex) => (prevIndex + 1) % featuredPosts.length);
+            setCurrentIndex((prevIndex) => (prevIndex + 1) % banners.length);
         }, 5000); // 5 giây đổi slide
         
         return () => clearInterval(interval);
-    }, [featuredPosts.length]);
+    }, [banners.length]);
 
     const getImageUrl = (url) => {
         if (!url) return '/hero-banner.png'; // Fallback
@@ -34,24 +35,46 @@ const HeroBanner = () => {
     };
 
     const nextSlide = () => {
-        setCurrentIndex((prevIndex) => (prevIndex + 1) % featuredPosts.length);
+        setCurrentIndex((prevIndex) => (prevIndex + 1) % banners.length);
     };
 
     const prevSlide = () => {
-        setCurrentIndex((prevIndex) => (prevIndex - 1 + featuredPosts.length) % featuredPosts.length);
+        setCurrentIndex((prevIndex) => (prevIndex - 1 + banners.length) % banners.length);
     };
 
     const goToSlide = (index) => {
         setCurrentIndex(index);
     };
 
-    const currentPost = featuredPosts[currentIndex];
-    const backgroundUrl = currentPost ? getImageUrl(currentPost.imageUrl) : '/hero-banner.png';
-    const title = currentPost ? currentPost.title : 'Khám Phá Nghệ Thuật Mùi Hương';
-    
-    // Xóa thẻ HTML khỏi nội dung bài viết và cắt ngắn gọn
-    const cleanContent = currentPost && currentPost.content ? currentPost.content.replace(/<[^>]*>?/gm, '') : '';
-    const subtitle = currentPost ? (cleanContent.length > 150 ? cleanContent.substring(0, 150) + '...' : cleanContent) : 'Bộ sưu tập nước hoa chính hãng từ những thương hiệu hàng đầu thế giới.';
+    const currentBanner = banners[currentIndex];
+    const backgroundUrl = currentBanner ? getImageUrl(currentBanner.imageUrl) : '/hero-banner.png';
+        
+    const title = currentBanner ? currentBanner.title : 'Khám Phá Nghệ Thuật Mùi Hương';
+    const link = currentBanner && currentBanner.link ? currentBanner.link : '/products';
+
+    if (isLoading) {
+        return (
+            <section className="hero-section" style={{ padding: '0', position: 'relative', overflow: 'hidden' }}>
+                <div 
+                    className="hero-banner-inner" 
+                    style={{ 
+                        background: 'linear-gradient(rgba(17, 17, 17, 0.7), rgba(17, 17, 17, 0.9))',
+                        width: '100%',
+                        height: '650px',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        borderTop: '3px solid rgba(212, 175, 55, 0.5)', 
+                        borderBottom: '3px solid rgba(212, 175, 55, 0.5)', 
+                    }}
+                >
+                    <div className="spinner-border" style={{ color: '#D4AF37', width: '3rem', height: '3rem' }} role="status">
+                        <span className="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+            </section>
+        );
+    }
 
     return (
         <section className="hero-section" style={{ padding: '0', position: 'relative', overflow: 'hidden' }}>
@@ -74,21 +97,18 @@ const HeroBanner = () => {
                 <div className="container" style={{ display: 'flex', justifyContent: 'center', height: '100%', alignItems: 'center' }}>
                     <div className="hero-content" style={{ animation: 'fadeIn 1s ease-in-out' }} key={currentIndex}>
                         <h1 className="hero-title">{title}</h1>
-                        <p className="hero-subtitle">{subtitle}</p>
+                        <p className="hero-subtitle">Bộ sưu tập nước hoa chính hãng từ những thương hiệu hàng đầu thế giới.</p>
                         <div className="hero-actions">
-                            {currentPost ? (
-                                <Link to={`/post/${currentPost.id}`} className="btn-primary" style={{ display: 'inline-block', textDecoration: 'none' }}>Đọc Tiếp Câu Chuyện</Link>
-                            ) : (
-                                <button className="btn-primary">Khám Phá Ngay</button>
-                            )}
-                            <Link to="/products" className="btn-outline" style={{ display: 'inline-block', textDecoration: 'none' }}>Xem Bộ Sưu Tập</Link>
+                            <Link to={link} className="btn-primary" style={{ display: 'inline-block', textDecoration: 'none' }}>
+                                Khám Phá Ngay
+                            </Link>
                         </div>
                     </div>
                 </div>
             </div>
 
             {/* Slider Controls */}
-            {featuredPosts.length > 1 && (
+            {banners.length > 1 && (
                 <>
                     {/* Left Arrow */}
                     <button 
@@ -112,7 +132,7 @@ const HeroBanner = () => {
 
                     {/* Dots */}
                     <div style={{ position: 'absolute', bottom: '20px', left: '50%', transform: 'translateX(-50%)', display: 'flex', gap: '10px', zIndex: 10 }}>
-                        {featuredPosts.map((_, index) => (
+                        {banners.map((_, index) => (
                             <span 
                                 key={index} 
                                 onClick={() => goToSlide(index)}

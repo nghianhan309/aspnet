@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useLocation } from 'react-router-dom';
 import Header from '../../components/layout/Header';
 import Footer from '../../components/layout/Footer';
 import ProductFilter from '../../components/products/ProductFilter';
@@ -8,12 +8,16 @@ import api from '../../services/api';
 
 const Products = () => {
     const { categoryParam } = useParams();
+    const location = useLocation();
+    const queryParams = new URLSearchParams(location.search);
+    const searchQuery = queryParams.get('search') || '';
+
     const [allProducts, setAllProducts] = useState([]);
     const [filteredProducts, setFilteredProducts] = useState([]);
     const [categories, setCategories] = useState([]);
     
     const [selectedCategory, setSelectedCategory] = useState('');
-    const [priceRange, setPriceRange] = useState('all');
+    const [priceRange, setPriceRange] = useState({ min: '', max: '' });
     const [isLoading, setIsLoading] = useState(true);
     
     // Pagination states
@@ -38,7 +42,11 @@ const Products = () => {
     // Fetch data
     useEffect(() => {
         setIsLoading(true);
-        api.get('/api/productapi')
+        const endpoint = searchQuery 
+            ? `/api/productapi/search?keyword=${encodeURIComponent(searchQuery)}`
+            : '/api/productapi';
+            
+        api.get(endpoint)
             .then(res => {
                 if (res.data && res.data.success) {
                     const data = res.data.data;
@@ -52,7 +60,7 @@ const Products = () => {
             })
             .catch(err => console.error("Error fetching products:", err))
             .finally(() => setIsLoading(false));
-    }, []);
+    }, [searchQuery]);
 
     // Handle Filtering
     useEffect(() => {
@@ -64,13 +72,12 @@ const Products = () => {
         }
 
         // Filter by price
-        if (priceRange !== 'all') {
+        if (priceRange.min !== '' || priceRange.max !== '') {
             result = result.filter(p => {
                 const price = p.price || 0;
-                if (priceRange === 'under2m') return price < 2000000;
-                if (priceRange === '2m-5m') return price >= 2000000 && price <= 5000000;
-                if (priceRange === 'over5m') return price > 5000000;
-                return true;
+                const min = priceRange.min !== '' ? parseInt(priceRange.min) : 0;
+                const max = priceRange.max !== '' ? parseInt(priceRange.max) : Infinity;
+                return price >= min && price <= max;
             });
         }
 
@@ -131,6 +138,13 @@ const Products = () => {
                             </div>
                             
                             <ProductList products={currentProducts} isLoading={isLoading} />
+
+                            {!isLoading && filteredProducts.length === 0 && (
+                                <div style={{ textAlign: 'center', padding: '50px 0', width: '100%' }}>
+                                    <img src="https://cdni.iconscout.com/illustration/premium/thumb/empty-cart-7359557-6024626.png" alt="No products" style={{ width: '200px', opacity: 0.5, margin: '0 auto' }} />
+                                    <h3 style={{ color: '#888', marginTop: '20px', fontSize: '1.2rem', fontWeight: '400' }}>Không tìm thấy sản phẩm nào phù hợp với tiêu chí của bạn</h3>
+                                </div>
+                            )}
 
                             {/* Pagination UI */}
                             {!isLoading && totalPages > 1 && (

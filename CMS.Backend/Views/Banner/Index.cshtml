@@ -1,0 +1,66 @@
+@model IEnumerable<CMS.Data.Entities.Banner>
+
+@{
+    ViewData["Title"] = "Quản lý Banner";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card shadow-sm border-0 rounded-4">
+    <div class="card-header bg-white border-0 pt-4 pb-0 d-flex justify-content-between align-items-center">
+        <h5 class="mb-0 fw-bold" style="color:var(--text-main);">Danh sách Banner</h5>
+        <a asp-action="Create" class="btn btn-primary d-flex align-items-center gap-2 rounded-3">
+            <i class="fas fa-plus"></i> Thêm mới
+        </a>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead class="table-light text-muted" style="font-size: 0.85rem;">
+                    <tr>
+                        <th class="border-0 rounded-start">Hình ảnh</th>
+                        <th class="border-0">Tiêu đề</th>
+                        <th class="border-0">Thứ tự</th>
+                        <th class="border-0">Trạng thái</th>
+                        <th class="border-0 text-end rounded-end">Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody style="font-size: 0.9rem;">
+                    @foreach (var item in Model) {
+                        <tr>
+                            <td>
+                                @if (!string.IsNullOrEmpty(item.ImageUrl)) {
+                                    <img src="@item.ImageUrl" alt="Banner" class="rounded" style="height: 60px; object-fit: cover; max-width: 150px; border: 1px solid #eee;" />
+                                } else {
+                                    <span class="text-muted fst-italic">Không có ảnh</span>
+                                }
+                            </td>
+                            <td class="fw-medium">@item.Title</td>
+                            <td>@item.DisplayOrder</td>
+                            <td>
+                                @if (item.IsActive) {
+                                    <span class="badge bg-success bg-opacity-10 text-success px-3 py-2 rounded-pill">Đang bật</span>
+                                } else {
+                                    <span class="badge bg-secondary bg-opacity-10 text-secondary px-3 py-2 rounded-pill">Đã tắt</span>
+                                }
+                            </td>
+                            <td class="text-end">
+                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary rounded-3">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-outline-danger rounded-3 ms-1">
+                                    <i class="fas fa-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            @if (!Model.Any()) {
+                <div class="text-center py-5 text-muted">
+                    <i class="fas fa-images fs-1 mb-3 text-light"></i>
+                    <p>Chưa có banner nào. Hãy thêm banner mới!</p>
+                </div>
+            }
+        </div>
+    </div>
+</div>

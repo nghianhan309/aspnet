@@ -35,12 +35,32 @@ namespace CMS.Backend.Controllers
                 ViewBag.Error = "Vui lòng nhập đầy đủ tài khoản và mật khẩu.";
                 return View();
             }
-
-            // Kiểm tra mật khẩu thô trong DB
-            var user = _context.Users.FirstOrDefault(u => u.Username == username && u.PasswordHash == password);
+            // Tìm user theo username
+            var user = _context.Users.FirstOrDefault(u => u.Username == username);
 
             if (user != null)
             {
+                bool isPasswordValid = false;
+                
+                // Kiểm tra xem mật khẩu có phải là BCrypt hash không (BCrypt hash bắt đầu bằng $2)
+                if (user.PasswordHash.StartsWith("$2"))
+                {
+                    isPasswordValid = BCrypt.Net.BCrypt.Verify(password, user.PasswordHash);
+                }
+                else
+                {
+                    // Fallback: nếu đang lưu plain text thì kiểm tra plain text
+                    if (user.PasswordHash == password)
+                    {
+                        isPasswordValid = true;
+                        // Nâng cấp bảo mật: mã hóa lại mật khẩu thô và lưu vào DB
+                        user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(password);
+                        await _context.SaveChangesAsync();
+                    }
+                }
+
+                if (isPasswordValid)
+                {
                 // Tạo các claim cho user
                 var claims = new List<Claim>
                 {
@@ -64,6 +84,7 @@ namespace CMS.Backend.Controllers
                     authProperties);
 
                 return RedirectToAction("Index", "Home");
+            }
             }
 
             ViewBag.Error = "Tài khoản hoặc mật khẩu không chính xác.";

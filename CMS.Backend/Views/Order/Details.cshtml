@@ -16,6 +16,20 @@
                 <i class="fas fa-arrow-left me-1"></i> Quay lại
             </a>
         </div>
+        
+        @if (TempData["Error"] != null)
+        {
+            <div class="alert alert-danger m-3">
+                <i class="fas fa-exclamation-triangle me-2"></i>@TempData["Error"]
+            </div>
+        }
+        @if (TempData["Success"] != null)
+        {
+            <div class="alert alert-success m-3">
+                <i class="fas fa-check-circle me-2"></i>@TempData["Success"]
+            </div>
+        }
+
         <div class="p-4 bg-white">
             <div class="row">
                 <div class="col-md-6 mb-3">
@@ -83,8 +97,8 @@
                                 <td class="text-end">@detail.UnitPrice.ToString("N0") đ</td>
                                 <td class="text-end fw-bold text-success">@((detail.Quantity * detail.UnitPrice).ToString("N0")) đ</td>
                                 <td class="text-center">
-                                    <form asp-action="DeleteDetail" asp-route-id="@detail.Id" method="post" style="display:inline;" onsubmit="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này khỏi đơn hàng?');">
-                                        <button type="submit" class="btn btn-sm btn-outline-danger border-0">
+                                    <form style="display:inline;">
+                                        <button type="button" class="btn btn-sm btn-outline-danger border-0" title="Xóa bớt" onclick="confirmDelete(event, @detail.Id, @detail.Quantity);">
                                             <i class="fas fa-trash-alt"></i>
                                         </button>
                                     </form>
@@ -111,3 +125,59 @@
 </div>
 
 @await Html.PartialAsync("_SaasTableStyle")
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        function confirmDelete(e, id, maxQty) {
+            e.preventDefault();
+            Swal.fire({
+                title: 'Xóa bớt sản phẩm',
+                html: `Vui lòng nhập số lượng bạn muốn <b>xóa bớt</b> khỏi đơn hàng (Đang có ${maxQty} cái).<br><br><small class="text-muted">Hệ thống sẽ tự động hoàn trả số lượng bị xóa về kho.</small>`,
+                input: 'number',
+                inputValue: 1,
+                inputAttributes: {
+                    min: 1,
+                    max: maxQty,
+                    step: 1
+                },
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#e74c3c',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: '<i class="fas fa-trash-alt me-1"></i> Xóa bớt',
+                cancelButtonText: 'Hủy',
+                inputValidator: (value) => {
+                    if (!value || value <= 0 || value > maxQty) {
+                        return `Vui lòng nhập số lượng từ 1 đến ${maxQty}!`;
+                    }
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    let removeAmount = parseInt(result.value);
+                    let newQty = maxQty - removeAmount;
+                    
+                    const form = document.createElement('form');
+                    form.method = 'post';
+                    form.action = '/Order/UpdateDetailQuantity/' + id;
+                    
+                    const token = document.querySelector('input[name="__RequestVerificationToken"]').value;
+                    const tokenInput = document.createElement('input');
+                    tokenInput.type = 'hidden';
+                    tokenInput.name = '__RequestVerificationToken';
+                    tokenInput.value = token;
+                    
+                    const newQtyInput = document.createElement('input');
+                    newQtyInput.type = 'hidden';
+                    newQtyInput.name = 'newQuantity';
+                    newQtyInput.value = newQty;
+                    
+                    form.appendChild(tokenInput);
+                    form.appendChild(newQtyInput);
+                    document.body.appendChild(form);
+                    form.submit();
+                }
+            });
+        }
+    </script>
+}

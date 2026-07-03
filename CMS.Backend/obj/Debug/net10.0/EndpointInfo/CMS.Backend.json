@@ -5,6 +5,18 @@
     "version": "1.0"
   },
   "paths": {
+    "/api/BannerApi": {
+      "get": {
+        "tags": [
+          "BannerApi"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/category": {
       "get": {
         "tags": [
@@ -794,6 +806,55 @@
         }
       }
     },
+    "/api/ProductApi/bestselling": {
+      "get": {
+        "tags": [
+          "ProductApi"
+        ],
+        "parameters": [
+          {
+            "name": "count",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 3
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Product"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Product"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Product"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/TestApi/ping": {
       "get": {
         "tags": [
@@ -1110,6 +1171,9 @@
             "type": "string",
             "nullable": true
           },
+          "isHot": {
+            "type": "boolean"
+          },
           "categoryProductId": {
             "type": "integer",
             "format": "int32"
@@ -1173,6 +1237,9 @@
     }
   },
   "tags": [
+    {
+      "name": "BannerApi"
+    },
     {
       "name": "CategoryApi"
     },

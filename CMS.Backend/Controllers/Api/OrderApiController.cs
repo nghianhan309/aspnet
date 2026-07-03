@@ -84,6 +84,84 @@ namespace CMS.Backend.Controllers.Api
 
             await _context.SaveChangesAsync();
 
+            // Lấy thông tin chi tiết để gửi email
+            var orderDetailsForEmail = await _context.OrderDetails
+                .Include(od => od.Product)
+                .Where(od => od.OrderId == order.Id)
+                .ToListAsync();
+
+            // Gửi email xác nhận đơn hàng
+            try
+            {
+                using (var smtpClient = new System.Net.Mail.SmtpClient("smtp.gmail.com", 587))
+                {
+                    smtpClient.Credentials = new System.Net.NetworkCredential("nghianhan30092k5@gmail.com", "giglpgngnlafipkp");
+                    smtpClient.EnableSsl = true;
+
+                    string productRows = "";
+                    decimal totalAmount = 0;
+                    foreach (var od in orderDetailsForEmail)
+                    {
+                        var productName = od.Product != null ? od.Product.Name : "Sản phẩm";
+                        var subTotal = od.Quantity * od.UnitPrice;
+                        totalAmount += subTotal;
+                        productRows += $"<tr><td style='padding: 10px; border-bottom: 1px solid #ddd;'>{productName}</td><td style='padding: 10px; border-bottom: 1px solid #ddd; text-align: center;'>{od.Quantity}</td><td style='padding: 10px; border-bottom: 1px solid #ddd; text-align: right;'>{subTotal:N0}đ</td></tr>";
+                    }
+
+                    var mailMessage = new System.Net.Mail.MailMessage
+                    {
+                        From = new System.Net.Mail.MailAddress("nghianhan30092k5@gmail.com", "NEXUS FRAGRANCE"),
+                        Subject = $"Xác Nhận Đơn Hàng #{order.Id} - Nexus Fragrance",
+                        Body = $@"
+<div style='font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #e0e0e0; border-radius: 10px; overflow: hidden;'>
+    <div style='background-color: #111; color: #fff; padding: 20px; text-align: center;'>
+        <h2 style='margin: 0; font-family: Georgia, serif; font-weight: normal; letter-spacing: 2px;'>NEXUS FRAGRANCE</h2>
+    </div>
+    <div style='padding: 30px; background-color: #fff;'>
+        <h3 style='color: #333; margin-top: 0;'>Xin chào {customer.FullName},</h3>
+        <p style='color: #555; line-height: 1.6;'>Cảm ơn bạn đã mua sắm tại Nexus Fragrance. Đơn hàng của bạn đã được hệ thống ghi nhận thành công và đang chờ xử lý.</p>
+        
+        <h4 style='border-bottom: 2px solid #D4AF37; padding-bottom: 5px; color: #333;'>Chi Tiết Đơn Hàng #{order.Id}</h4>
+        <table style='width: 100%; border-collapse: collapse; margin-bottom: 20px;'>
+            <thead>
+                <tr style='background-color: #f9f9f9;'>
+                    <th style='padding: 10px; text-align: left; border-bottom: 2px solid #ddd;'>Sản phẩm</th>
+                    <th style='padding: 10px; text-align: center; border-bottom: 2px solid #ddd;'>SL</th>
+                    <th style='padding: 10px; text-align: right; border-bottom: 2px solid #ddd;'>Tạm tính</th>
+                </tr>
+            </thead>
+            <tbody>
+                {productRows}
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan='2' style='padding: 10px; text-align: right; font-weight: bold;'>Tổng Cộng:</td>
+                    <td style='padding: 10px; text-align: right; font-weight: bold; color: #D4AF37;'>{totalAmount:N0}đ</td>
+                </tr>
+            </tfoot>
+        </table>
+
+        <div style='background-color: #f9f9f9; padding: 15px; border-radius: 8px; margin-top: 20px;'>
+            <p style='margin: 0 0 10px 0;'><strong>Địa chỉ giao hàng:</strong> {request.ShippingAddress}</p>
+            <p style='margin: 0 0 10px 0;'><strong>Số điện thoại:</strong> {request.PhoneNumber}</p>
+            <p style='margin: 0;'><strong>Ghi chú:</strong> {request.Notes ?? "Không có"}</p>
+        </div>
+    </div>
+    <div style='background-color: #f5f5f5; padding: 15px; text-align: center; color: #999; font-size: 12px;'>
+        &copy; {DateTime.Now.Year} Nexus Fragrance. All rights reserved.
+    </div>
+</div>",
+                        IsBodyHtml = true,
+                    };
+                    mailMessage.To.Add(customer.Email);
+                    await smtpClient.SendMailAsync(mailMessage);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Lỗi gửi mail đặt hàng: " + ex.Message);
+            }
+
             return Ok(new { success = true, message = "Đặt hàng thành công!", orderId = order.Id });
         }
 

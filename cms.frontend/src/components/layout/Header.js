@@ -115,9 +115,21 @@ const Header = () => {
 
                 {/* Actions */}
                 <div className="header-actions">
-                    <button className="action-btn">
-                        <Search size={20} />
-                    </button>
+                    <div style={{ display: 'flex', alignItems: 'center', border: '1px solid #ccc', borderRadius: '20px', padding: '4px 12px', background: '#fff' }}>
+                        <Search size={16} style={{ color: '#888' }} />
+                        <input 
+                            type="text" 
+                            placeholder="Tìm kiếm..." 
+                            style={{ border: 'none', outline: 'none', padding: '4px 8px', background: 'transparent', width: '150px' }}
+                            onKeyDown={(e) => {
+                                if (e.key === 'Enter') {
+                                    if (e.target.value.trim()) {
+                                        window.location.href = `/products?search=${e.target.value.trim()}`;
+                                    }
+                                }
+                            }}
+                        />
+                    </div>
                     
                     {(() => {
                         const customerJson = localStorage.getItem('customer');
@@ -156,9 +168,13 @@ const Header = () => {
                         );
                     })()}
 
-                    <Link to="/cart" className="action-btn cart-btn">
+                    <Link to="/cart" className="action-btn cart-btn" style={{ position: 'relative' }}>
                         <ShoppingBag size={20} />
-                        <span className="cart-badge">{getCartCount()}</span>
+                        {getCartCount() > 0 && (
+                            <span className="cart-badge" style={{ position: 'absolute', top: '-5px', right: '-8px', backgroundColor: '#e74c3c', color: 'white', borderRadius: '50%', minWidth: '18px', height: '18px', fontSize: '11px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold' }}>
+                                {getCartCount()}
+                            </span>
+                        )}
                     </Link>
                 </div>
             </div>

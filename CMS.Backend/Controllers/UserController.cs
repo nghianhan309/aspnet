@@ -39,6 +39,9 @@ namespace CMS.Backend.Controllers
                     ModelState.AddModelError("Username", "Tên đăng nhập này đã tồn tại!");
                     return View(user);
                 }
+                
+                user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(user.PasswordHash);
+                
                 _context.Add(user);
                 _context.SaveChanges();
                 return RedirectToAction(nameof(Index));
@@ -72,6 +75,13 @@ namespace CMS.Backend.Controllers
                     ModelState.AddModelError("Username", "Tên đăng nhập này đã tồn tại!");
                     return View(user);
                 }
+
+                // Nếu mật khẩu không bắt đầu bằng $2 (tức là người dùng vừa nhập mật khẩu mới chưa mã hóa)
+                if (!string.IsNullOrEmpty(user.PasswordHash) && !user.PasswordHash.StartsWith("$2"))
+                {
+                    user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(user.PasswordHash);
+                }
+
                 _context.Update(user);
                 _context.SaveChanges();
                 return RedirectToAction(nameof(Index));

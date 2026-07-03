@@ -135,20 +135,29 @@ namespace CMS.Backend.Controllers
             {
                 if (imageFile != null && imageFile.Length > 0)
                 {
-                    var uploadsFolder = Path.Combine(_env.WebRootPath, "uploads", "posts");
-                    if (!Directory.Exists(uploadsFolder))
+                    try 
                     {
-                        Directory.CreateDirectory(uploadsFolder);
+                        var webRoot = _env.WebRootPath ?? Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
+                        var uploadsFolder = Path.Combine(webRoot, "uploads", "posts");
+                        if (!Directory.Exists(uploadsFolder))
+                        {
+                            Directory.CreateDirectory(uploadsFolder);
+                        }
+                        var uniqueFileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(imageFile.FileName);
+                        var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                        using (var fileStream = new FileStream(filePath, FileMode.Create))
+                        {
+                            await imageFile.CopyToAsync(fileStream);
+                        }
+                        post.ImageUrl = "/uploads/posts/" + uniqueFileName;
                     }
-                    var uniqueFileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(imageFile.FileName);
-                    var filePath = Path.Combine(uploadsFolder, uniqueFileName);
-                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    catch (Exception ex)
                     {
-                        await imageFile.CopyToAsync(fileStream);
+                        ModelState.AddModelError("", "Lỗi khi upload ảnh: " + ex.Message);
+                        ViewBag.CategoryId = new SelectList(_context.Categories, "Id", "Name", post.CategoryId);
+                        return View(post);
                     }
-                    post.ImageUrl = "/uploads/posts/" + uniqueFileName;
                 }
-
                 post.ImageUrl ??= "";
 
                 _context.Update(post);
@@ -192,6 +201,40 @@ namespace CMS.Backend.Controllers
 
             _context.SaveChanges();
             return RedirectToAction(nameof(Index));
+        }
+
+        // POST: Post/UploadImage (Dùng cho CKEditor upload ảnh)
+        [HttpPost]
+        public async Task<IActionResult> UploadImage(IFormFile upload)
+        {
+            if (upload != null && upload.Length > 0)
+            {
+                try 
+                {
+                    var webRoot = _env.WebRootPath ?? Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
+                    var uploadsFolder = Path.Combine(webRoot, "uploads", "editor");
+                    if (!Directory.Exists(uploadsFolder))
+                    {
+                        Directory.CreateDirectory(uploadsFolder);
+                    }
+
+                    var uniqueFileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(upload.FileName);
+                    var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await upload.CopyToAsync(fileStream);
+                    }
+
+                    var url = "/uploads/editor/" + uniqueFileName;
+                    return Json(new { uploaded = 1, fileName = uniqueFileName, url = url });
+                }
+                catch (Exception ex)
+                {
+                    return Json(new { uploaded = 0, error = new { message = "Lỗi hệ thống: " + ex.Message } });
+                }
+            }
+            return Json(new { uploaded = 0, error = new { message = "Lỗi upload ảnh, file không hợp lệ." } });
         }
     }
 }

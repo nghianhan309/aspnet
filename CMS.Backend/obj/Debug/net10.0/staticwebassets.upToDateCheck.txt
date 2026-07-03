@@ -63,18 +63,25 @@ wwwroot\images\1.jpeg
 wwwroot\images\1.png
 wwwroot\images\10-nuoc-hoa-nu-cao-cap-voi-huong-thom-diu-duoc-phai-dep-me-man-9-1554793980-644-width550height414.jpg
 wwwroot\images\2.jpg
+wwwroot\images\5d959a5a381ebf99ee171b358723e3c5.jpg
+wwwroot\images\6522dfb952eddea02aa134e9916cc1ec.jpg
+wwwroot\images\9860e4da4949d18756d691d3bac31483.jpg
 wwwroot\images\Creed-Aventus-EDP-apa-niche.jpg
 wwwroot\images\DIOR.png
 wwwroot\images\GUCCI.jpg
 wwwroot\images\Le-Labo-Santal-33-EDP-apa-niche.png.webp
 wwwroot\images\TOM FORD.png
 wwwroot\images\YVES SAINT LAURENT.jpg
+wwwroot\images\af3cb50cec2b80f41ac063b5b33f651e.jpg
 wwwroot\images\dior-j_adore-eau-de-parfum-1_0e2466f4fcfa4adc93047e72afdfe77e_master_accc1727ab424dd290d9af4b736699f4.png
 wwwroot\images\images (1).jpg
 wwwroot\images\images (2).jpg
 wwwroot\images\images (3).jpg
 wwwroot\images\images (4).jpg
+wwwroot\images\images (5).jpg
+wwwroot\images\images (6).jpg
 wwwroot\images\images.jpg
+wwwroot\images\mui-nuoc-hoa-kinh-dien-02.jpg
 wwwroot\images\nuoc hoa unisex.jpg
 wwwroot\images\nuoc-hoa-maison-baccarat-rouge-540_6ae5c5329b834dd4a87ae05420fe602c_1024x1024.png
 wwwroot\images\nuoc-hoa-unisex-le-labo-santal-33-2.png
@@ -139,8 +146,19 @@ wwwroot\lib\jquery\LICENSE.txt
 wwwroot\lib\jquery\dist\jquery.js
 wwwroot\lib\jquery\dist\jquery.min.js
 wwwroot\lib\jquery\dist\jquery.min.map
+wwwroot\uploads\banners\3e629ede-509b-4a71-a742-0ca1e417da04_5d959a5a381ebf99ee171b358723e3c5.jpg
+wwwroot\uploads\banners\616ddc80-fe8c-41bd-9ead-2e328df99584_images (6).jpg
+wwwroot\uploads\banners\82b86822-1222-4250-91f8-f7964d921d2d_6522dfb952eddea02aa134e9916cc1ec.jpg
+wwwroot\uploads\banners\a2b97018-c688-425c-b6c1-0aca2ebd5027_af3cb50cec2b80f41ac063b5b33f651e.jpg
+wwwroot\uploads\banners\cc40ca0c-ee86-4bd2-84e0-a4dc1ea37437_nuoc-hoa6-15446764998601907178959.jpg
+wwwroot\uploads\banners\e7edce5d-1ce1-4207-abf9-72253cd3af05_images (5).jpg
+wwwroot\uploads\posts\0855610a-2be5-42ff-b003-0b1c2265d9f8_images (5).jpg
 wwwroot\uploads\posts\18c1e417-5b8d-4a13-995a-f7ec5188d6c4_10-nuoc-hoa-nu-cao-cap-voi-huong-thom-diu-duoc-phai-dep-me-man-9-1554793980-644-width550height414.jpg
+wwwroot\uploads\posts\47160ff9-425b-4470-9946-cbec59e9c0ae_images (5).jpg
+wwwroot\uploads\posts\47d6e55b-05b0-409a-973b-15ef704ce917_5d959a5a381ebf99ee171b358723e3c5.jpg
 wwwroot\uploads\posts\5c043fb6-65d6-47ad-9e68-8dff0bf1cfaa_nuoc hoa unisex.jpg
+wwwroot\uploads\posts\5cf2e0a2-79d6-4693-a7b0-9382fddb10de_images (6).jpg
+wwwroot\uploads\posts\6a96f68f-aa08-4dbf-a764-7edf88bb981b_10-nuoc-hoa-nu-cao-cap-voi-huong-thom-diu-duoc-phai-dep-me-man-9-1554793980-644-width550height414.jpg
 wwwroot\uploads\posts\87d6ea7a-7462-4eea-ae4f-a7c67b8a5bca_nuoc-hoa6-15446764998601907178959.jpg
 wwwroot\uploads\posts\b43b578e-cce6-48b6-a43c-70dd60256e3d_1.png
 wwwroot\uploads\posts\f7efc7a6-7714-4c13-af84-0dfad247c2eb_DIOR.png
@@ -149,6 +167,7 @@ wwwroot\uploads\products\2b0e9d71-5094-4245-b50d-5ef9786e4252_nuoc-hoa-maison-ba
 wwwroot\uploads\products\2d871ba9-9c10-44a6-947b-db54716f83f0_images (4).jpg
 wwwroot\uploads\products\2eb729f4-18f4-4255-86c5-5e75f07eb9fd_Creed-Aventus-EDP-apa-niche.jpg
 wwwroot\uploads\products\41828cb0-47e5-4a5b-8063-b0c8b58ab569_2.jpg
+wwwroot\uploads\products\6820f908-6a68-4f35-8234-db584f612c41_9860e4da4949d18756d691d3bac31483.jpg
 wwwroot\uploads\products\958365bf-5b77-4be3-bf08-8fa0bcab6f4a_1.jpeg
 wwwroot\uploads\products\9ae3bc5a-6cbb-48d6-a2ca-600cfe8524d5_nuoc-hoa-unisex-le-labo-santal-33-2.png
 wwwroot\uploads\products\d65b3605-e3f6-4de4-867e-1233205f9571_images (1).jpg

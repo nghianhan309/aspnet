@@ -31,6 +31,8 @@ namespace CMS.Data.Entities
 
         public string? ImageUrl { get; set; }
 
+        public bool IsHot { get; set; } = false; // Đánh dấu sản phẩm Hot / Bán chạy
+
         // Khóa ngoại nối tới CategoryProduct
         public int CategoryProductId { get; set; }
 

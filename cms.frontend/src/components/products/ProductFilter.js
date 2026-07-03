@@ -19,20 +19,23 @@ const ProductFilter = ({ categories, selectedCategory, onCategoryChange, priceRa
 
             <div className="filter-section">
                 <h3 className="filter-title">Khoảng Giá</h3>
-                <ul className="filter-list">
-                    <li className={priceRange === 'all' ? 'active' : ''}>
-                        <button onClick={() => onPriceChange('all')}>Tất cả mức giá</button>
-                    </li>
-                    <li className={priceRange === 'under2m' ? 'active' : ''}>
-                        <button onClick={() => onPriceChange('under2m')}>Dưới 2.000.000đ</button>
-                    </li>
-                    <li className={priceRange === '2m-5m' ? 'active' : ''}>
-                        <button onClick={() => onPriceChange('2m-5m')}>2.000.000đ - 5.000.000đ</button>
-                    </li>
-                    <li className={priceRange === 'over5m' ? 'active' : ''}>
-                        <button onClick={() => onPriceChange('over5m')}>Trên 5.000.000đ</button>
-                    </li>
-                </ul>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '15px' }}>
+                    <input 
+                        type="number" 
+                        placeholder="Giá thấp nhất (VNĐ)" 
+                        value={priceRange.min} 
+                        onChange={(e) => onPriceChange({ ...priceRange, min: e.target.value })} 
+                        style={{ width: '100%', padding: '10px 12px', border: '1px solid #e2e8f0', borderRadius: '6px', fontSize: '0.95rem', outline: 'none', transition: 'border-color 0.2s' }} 
+                    />
+                    <div style={{ textAlign: 'center', color: '#94a3b8', fontSize: '0.8rem', fontWeight: '500' }}>ĐẾN</div>
+                    <input 
+                        type="number" 
+                        placeholder="Giá cao nhất (VNĐ)" 
+                        value={priceRange.max} 
+                        onChange={(e) => onPriceChange({ ...priceRange, max: e.target.value })} 
+                        style={{ width: '100%', padding: '10px 12px', border: '1px solid #e2e8f0', borderRadius: '6px', fontSize: '0.95rem', outline: 'none', transition: 'border-color 0.2s' }} 
+                    />
+                </div>
             </div>
         </aside>
     );

@@ -4,6 +4,7 @@ import Header from '../../components/layout/Header';
 import Footer from '../../components/layout/Footer';
 import { useCart } from '../../context/CartContext';
 import api from '../../services/api';
+import Swal from 'sweetalert2';
 
 const Checkout = () => {
     const { cartItems, getCartTotal, clearCart } = useCart();
@@ -47,7 +48,12 @@ const Checkout = () => {
         // Lấy thông tin khách hàng đã đăng nhập
         const customerJson = localStorage.getItem('customer');
         if (!customerJson) {
-            alert('Vui lòng đăng nhập để đặt hàng!');
+            Swal.fire({
+                title: 'Yêu cầu đăng nhập',
+                text: 'Vui lòng đăng nhập để đặt hàng!',
+                icon: 'info',
+                confirmButtonColor: '#111'
+            });
             navigate('/login');
             return;
         }
@@ -70,14 +76,30 @@ const Checkout = () => {
 
             const res = await api.post('/api/orderapi', orderPayload);
             if (res.data && res.data.success) {
+                Swal.fire({
+                    title: 'Đặt hàng thành công!',
+                    text: 'Cảm ơn bạn đã mua sắm tại NEXUS FRAGRANCE.',
+                    icon: 'success',
+                    confirmButtonColor: '#10B981'
+                });
                 clearCart();
-                navigate('/order-success', { state: { orderId: res.data.orderId } });
+                navigate('/');
             } else {
-                alert('Đặt hàng thất bại, vui lòng thử lại!');
+                Swal.fire({
+                    title: 'Lỗi',
+                    text: res.data.message || 'Đặt hàng thất bại, vui lòng thử lại!',
+                    icon: 'error',
+                    confirmButtonColor: '#e74c3c'
+                });
             }
         } catch (err) {
-            console.error('Checkout error:', err);
-            alert('Có lỗi xảy ra, vui lòng thử lại!');
+            console.error('Lỗi đặt hàng:', err);
+            Swal.fire({
+                title: 'Lỗi',
+                text: 'Có lỗi xảy ra, vui lòng thử lại!',
+                icon: 'error',
+                confirmButtonColor: '#e74c3c'
+            });
         } finally {
             setIsLoading(false);
         }

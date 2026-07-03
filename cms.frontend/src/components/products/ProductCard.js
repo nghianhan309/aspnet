@@ -2,6 +2,7 @@ import React from 'react';
 import { ShoppingCart } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useCart } from '../../context/CartContext';
+import Swal from 'sweetalert2';
 
 const ProductCard = ({ product }) => {
     const { addToCart } = useCart();
@@ -13,8 +14,31 @@ const ProductCard = ({ product }) => {
     };
 
     const handleAddToCart = () => {
+        const cartItems = JSON.parse(localStorage.getItem('cartItems') || '[]');
+        const existingItem = cartItems.find(i => i.id === product.id);
+        const currentQtyInCart = existingItem ? existingItem.quantity : 0;
+        
+        if (currentQtyInCart + 1 > product.stockQuantity) {
+            Swal.fire({
+                title: 'Rất tiếc!',
+                text: "Số lượng sản phẩm trong kho không đủ!",
+                icon: 'warning',
+                confirmButtonColor: '#e74c3c'
+            });
+            return;
+        }
+
         addToCart(product, 1);
-        alert(`Đã thêm ${product.name} vào giỏ hàng!`);
+        Swal.fire({
+            title: 'Thành công!',
+            text: `Đã thêm ${product.name} vào giỏ hàng!`,
+            icon: 'success',
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true
+        });
     };
 
     return (

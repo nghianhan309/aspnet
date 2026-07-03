@@ -1,5 +1,15 @@
 [
   {
+    "ContainingType": "CMS.Backend.Controllers.Api.BannerApiController",
+    "Method": "GetActiveBanners",
+    "RelativePath": "api/BannerApi",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "CMS.Backend.Controllers.Api.CategoryApiController",
     "Method": "GetAll",
     "RelativePath": "api/category",
@@ -378,6 +388,32 @@
     "ReturnTypes": [
       {
         "Type": "CMS.Data.Entities.Product",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "CMS.Backend.Controllers.Api.ProductApiController",
+    "Method": "GetBestSellingProducts",
+    "RelativePath": "api/ProductApi/bestselling",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "count",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.List\u00601[[CMS.Data.Entities.Product, CMS.Data, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "MediaTypes": [
           "text/plain",
           "application/json",

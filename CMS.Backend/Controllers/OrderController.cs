@@ -155,5 +155,56 @@ namespace CMS.Backend.Controllers
             }
             return RedirectToAction(nameof(Index));
         }
+
+        // POST: Order/UpdateDetailQuantity/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult UpdateDetailQuantity(int id, int newQuantity)
+        {
+            var detail = _context.OrderDetails
+                .Include(od => od.Product)
+                .FirstOrDefault(d => d.Id == id);
+
+            if (detail != null && newQuantity >= 0)
+            {
+                if (newQuantity == 0)
+                {
+                    // Xóa hoàn toàn (hoàn trả toàn bộ kho)
+                    if (detail.Product != null)
+                    {
+                        detail.Product.StockQuantity += detail.Quantity;
+                    }
+                    _context.OrderDetails.Remove(detail);
+                    _context.SaveChanges();
+                    TempData["Success"] = "Đã xóa hoàn toàn sản phẩm khỏi đơn hàng!";
+                }
+                else
+                {
+                    int difference = detail.Quantity - newQuantity;
+                    
+                    if (difference != 0)
+                    {
+                        if (detail.Product != null)
+                        {
+                            // Nếu tăng số lượng (difference < 0), kiểm tra kho
+                            if (difference < 0 && detail.Product.StockQuantity < Math.Abs(difference))
+                            {
+                                TempData["Error"] = $"Kho không đủ hàng! Sản phẩm '{detail.Product.Name}' chỉ còn {detail.Product.StockQuantity} cái.";
+                                return RedirectToAction(nameof(Details), new { id = detail.OrderId });
+                            }
+                            
+                            detail.Product.StockQuantity += difference; // Cộng lại phần chênh lệch vào kho
+                        }
+
+                        detail.Quantity = newQuantity;
+                        _context.Update(detail);
+                        _context.SaveChanges();
+                        TempData["Success"] = "Đã cập nhật số lượng thành công!";
+                    }
+                }
+            }
+
+            return RedirectToAction(nameof(Details), new { id = detail?.OrderId });
+        }
     }
 }

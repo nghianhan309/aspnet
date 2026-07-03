@@ -5,12 +5,10 @@ const NewArrivals = () => {
     const [products, setProducts] = useState([]);
 
     useEffect(() => {
-        api.get('/api/productapi')
+        api.get('/api/productapi/latest?count=3')
             .then(res => {
                 if (res.data && res.data.success) {
-                    // Mocks new arrivals by taking the last 4 items, or reversing
-                    const reversed = [...res.data.data].reverse();
-                    setProducts(reversed.slice(0, 4));
+                    setProducts(res.data.data);
                 }
             })
             .catch(err => console.error("Error fetching products:", err));
